@@ -1,0 +1,181 @@
+@import url('../components/variables.css');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
+}
+
+
+/* Main Content */
+.main-content {
+  margin-left: 260px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+/* Header */
+.top-header {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
+}
+
+.student-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.student-info h2 {
+  color: var(--navy-blue);
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.student-details {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.student-details span {
+  color: #666;
+  font-size: 14px;
+}
+
+.student-details span strong {
+  color: var(--navy-blue);
+}
+
+/* Form Container */
+.form-container {
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+  background: linear-gradient(
+    135deg,
+    var(--navy-blue) 0%,
+    var(--light-navy) 100%
+  );
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+}
+
+.section-header i {
+  margin-right: 15px;
+  font-size: 24px;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.form-label {
+  color: var(--navy-blue);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.form-control,
+.form-select {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 0.2rem rgba(0, 116, 217, 0.15);
+}
+
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.btn-primary {
+  background: var(--accent-blue);
+  border: none;
+  padding: 12px 40px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: var(--light-navy);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 116, 217, 0.3);
+}
+
+.btn-secondary {
+  background: #6c757d;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.progress-bar-custom {
+  background: #e9ecef;
+  height: 8px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  background: linear-gradient(
+    90deg,
+    var(--accent-blue) 0%,
+    var(--light-navy) 100%
+  );
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+
+  .student-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .student-details {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.question-number {
+  color: var(--accent-blue);
+  font-weight: 700;
+  margin-right: 5px;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem !important;
+}

@@ -12,299 +12,38 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
       rel="stylesheet"
     />
-    <style>
-      :root {
-        --navy-blue: #001f3f;
-        --light-navy: #003366;
-        --accent-blue: #0074d9;
-      }
 
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f5f7fa;
-      }
-
-      /* Sidebar Styles */
-      .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        width: 260px;
-        background: var(--navy-blue);
-        color: white;
-        transition: all 0.3s;
-        z-index: 1000;
-        overflow-y: auto;
-      }
-
-      .sidebar.collapsed {
-        width: 80px;
-      }
-
-      .sidebar-header {
-        padding: 20px;
-        /* text-align: lef; */
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .sidebar-header h4 {
-        font-size: 1.2rem;
-        margin-top: 10px;
-        transition: opacity 0.3s;
-      }
-
-      .sidebar.collapsed .sidebar-header h4,
-      .sidebar.collapsed .nav-text {
-        opacity: 0;
-        display: none;
-      }
-
-      .sidebar-nav {
-        padding: 20px 0;
-      }
-
-      .nav-item {
-        padding: 15px 25px;
-        cursor: pointer;
-        transition: all 0.3s;
-        display: flex;
-        align-items: center;
-        color: rgba(255, 255, 255, 0.8);
-        text-decoration: none;
-      }
-
-      .nav-item:hover {
-        background: var(--light-navy);
-        color: white;
-        padding-left: 30px;
-      }
-
-      .nav-item.active {
-        background: var(--accent-blue);
-        color: white;
-        border-left: 4px solid white;
-      }
-
-      .nav-item i {
-        font-size: 1.2rem;
-        width: 30px;
-      }
-
-      .nav-text {
-        margin-left: 15px;
-      }
-
-      /* Main Content */
-      .main-content {
-        margin-left: 260px;
-        padding: 30px;
-        transition: margin-left 0.3s;
-      }
-
-      .main-content.expanded {
-        margin-left: 80px;
-      }
-
-      .toggle-btn {
-        position: fixed;
-        top: 20px;
-        left: 270px;
-        background: var(--accent-blue);
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        z-index: 999;
-        transition: left 0.3s;
-        display: none;
-      }
-
-      .toggle-btn.collapsed {
-        left: 90px;
-      }
-
-      .header {
-        background: white;
-        padding: 20px 30px;
-        border-radius: 10px;
-        margin-bottom: 30px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      }
-
-      .header h2 {
-        color: var(--navy-blue);
-        margin: 0;
-      }
-
-      /* Dashboard Cards */
-      .dashboard-card {
-        background: white;
-        border-radius: 10px;
-        padding: 25px;
-        margin-bottom: 25px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        transition: transform 0.3s;
-      }
-
-      .card-header-custom {
-        border-bottom: 2px solid var(--accent-blue);
-        padding-bottom: 15px;
-        margin-bottom: 20px;
-      }
-
-      .card-header-custom h5 {
-        color: var(--navy-blue);
-        font-weight: 600;
-        margin: 0;
-      }
-
-      /* Appointment Status */
-      .appointment-status {
-        background: linear-gradient(
-          135deg,
-          var(--navy-blue),
-          var(--light-navy)
-        );
-        color: white;
-        padding: 30px;
-        border-radius: 10px;
-      }
-
-      .status-badge {
-        display: inline-block;
-        padding: 5px 15px;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        font-weight: 600;
-      }
-
-      .status-pending {
-        background: #ffc107;
-        color: #000;
-      }
-
-      .status-scheduled {
-        background: #28a745;
-        color: white;
-      }
-
-      .status-cancelled {
-        background: #dc3545;
-        color: white;
-      }
-
-      /* Profile Snapshot */
-      .profile-snapshot {
-        height: 96%;
-      }
-
-      .profile-avatar {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        background: var(--accent-blue);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        color: white;
-        margin: 0 auto 15px;
-      }
-
-      /* Session History */
-      .session-item {
-        padding: 15px;
-        background: #f8f9fa;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .text-muted {
-        font-size: 0.8rem;
-      }
-
-      .text-muted span {
-        font-weight: 550;
-      }
-
-      .session-type {
-        color: var(--accent-blue);
-        font-weight: 600;
-      }
-
-      /* Responsive */
-      @media (max-width: 768px) {
-        .sidebar {
-          left: -260px;
-        }
-
-        .sidebar.active {
-          left: 0;
-        }
-
-        .main-content {
-          margin-left: 0;
-        }
-
-        .toggle-btn {
-          left: 20px;
-          z-index: 1000;
-        }
-
-        .toggle-btn.collapsed {
-          left: 20px;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="../../assets/styles/layouts/stud-dashboard.css">
+    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css">
   </head>
   <body>
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <i class="fas fa-user-graduate fa-2x"></i>
-        <h4>Guidance Counseling Management System</h4>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <h4><i class="fas fa-graduation-cap"></i> Guidance Counseling</h4>
       </div>
-      <nav class="sidebar-nav">
-        <a href="#" class="nav-item active">
-          <i class="fas fa-home"></i>
-          <span class="nav-text">Dashboard</span>
-        </a>
-        <a href="./book-appointment.html" class="nav-item">
-          <i class="fas fa-calendar-plus"></i>
-          <span class="nav-text">Book Appointment</span>
-        </a>
-        <a href="#" class="nav-item">
-          <i class="fas fa-bell"></i>
-          <span class="nav-text">Notifications</span>
-        </a>
-        <a href="#" class="nav-item">
-          <i class="fas fa-user"></i>
-          <span class="nav-text">Profile</span>
-        </a>
-        <a
-          href="#"
-          class="nav-item"
-          onclick="return confirm('Are you sure you want to logout?')"
-        >
-          <i class="fas fa-sign-out-alt"></i>
-          <span class="nav-text">Logout</span>
-        </a>
-      </nav>
-    </div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
+        </li>
+        <li>
+          <a href="./book-appointment.html" class=""
+            ><i class="fas fa-calendar-check"></i> Book Appointment</a
+          >
+        </li>
+        <li>
+          <a href="./notifications.html"><i class="fas fa-bell"></i> Notification</a>
+        </li>
+        <li>
+          <a href="./profile.html"><i class="fas fa-user"></i> Profile</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </li>
+      </ul>
+    </aside>
 
     <!-- Toggle Button -->
-    <button class="toggle-btn" id="toggleBtn">
+    <button class="sidebar-toggle" id="toggleBtn" onclick="toggleSidebar()">
       <i class="fas fa-bars"></i>
     </button>
 
@@ -421,54 +160,6 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-    <script>
-      // function toggleSidebar() {
-      //     const sidebar = document.getElementById('sidebar');
-      //     const mainContent = document.getElementById('mainContent');
-      //     const toggleBtn = document.getElementById('toggleBtn');
-
-      //     sidebar.classList.toggle('collapsed');
-      //     mainContent.classList.toggle('expanded');
-      //     toggleBtn.classList.toggle('collapsed');
-      // }
-
-      document.addEventListener("DOMContentLoaded", () => {
-        const toggleBtn = document.getElementById("toggleBtn");
-        const sidebar = document.getElementById("sidebar");
-        if (!toggleBtn || !sidebar) return;
-
-        // named handler so we can remove it later
-        function onToggleClick() {
-          sidebar.classList.toggle("active");
-          toggleBtn.setAttribute(
-            "aria-expanded",
-            sidebar.classList.contains("active")
-          );
-        }
-
-        function updateForViewport() {
-          if (window.innerWidth <= 768) {
-            toggleBtn.style.display = "block";
-            // attach only once
-            if (!toggleBtn._hasHandler) {
-              toggleBtn.addEventListener("click", onToggleClick);
-              toggleBtn._hasHandler = true;
-            }
-          } else {
-            toggleBtn.style.display = "none";
-            if (toggleBtn._hasHandler) {
-              toggleBtn.removeEventListener("click", onToggleClick);
-              toggleBtn._hasHandler = false;
-            }
-            // ensure sidebar is visible/hidden according to your desktop layout:
-            sidebar.classList.remove("active");
-            toggleBtn.setAttribute("aria-expanded", "false");
-          }
-        }
-
-        window.addEventListener("resize", updateForViewport);
-        updateForViewport(); // initial call
-      });
-    </script>
+    <script src="../../assets/scripts/components/sidebar.js"></script>
   </body>
 </html>
