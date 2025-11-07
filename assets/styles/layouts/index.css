@@ -1,0 +1,244 @@
+@import url('../components/variables.css');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(
+    135deg,
+    var(--navy-blue) 0%,
+    var(--light-navy) 100%
+  );
+  min-height: 100vh;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  /* padding: 20px; */
+}
+
+.login-container {
+  background: transparent;
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  /* box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); */
+  /* overflow: hidden; */
+  max-width: 450px;
+  width: 100%;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-header {
+  background: transparent;
+  color: white;
+  padding: 50px 30px 20px;
+  text-align: left;
+}
+
+.login-header i {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+.login-header h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.login-header p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.login-body {
+  padding: 30px 35px;
+  background: white;
+}
+
+.form-label {
+  color: var(--navy-blue);
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.form-control {
+  border: none;
+  border-bottom: 2px solid #e0e0e0;
+  /* border-radius: 10px; */
+  padding: 12px 15px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 0.2rem transparent;
+  outline: none !important;
+}
+
+.input-group .form-control {
+  border-left: none;
+  border-radius: 0;
+}
+
+.input-group:focus-within .input-group-text {
+  border-color: var(--accent-blue);
+}
+
+.form-check-input:checked {
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue);
+}
+
+.form-check-label {
+  color: #555;
+  font-size: 14px;
+}
+
+.forgot-password {
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+  color: var(--navy-blue);
+  text-decoration: underline;
+}
+
+.btn-login {
+  background: linear-gradient(
+    135deg,
+    var(--navy-blue) 0%,
+    var(--accent-blue) 100%
+  );
+  border: none;
+  color: white;
+  padding: 14px;
+  border-radius: 0;
+  font-size: 16px;
+  font-weight: 600;
+  width: 100%;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  /* margin-top: 10px; */
+}
+
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 116, 217, 0.3);
+}
+
+.btn-register {
+  background: white;
+  border: 1px solid var(--navy-blue);
+  color: var(--navy-blue);
+  padding: 14px;
+  border-radius: 0;
+  font-size: 16px;
+  font-weight: 600;
+  width: 100%;
+  transition: all 0.3s ease;
+  /* margin-top: 10px; */
+}
+
+.btn-register:hover {
+  background: var(--navy-blue);
+  color: white;
+}
+
+.divider {
+  text-align: center;
+  margin: 15px 0;
+  position: relative;
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+  background: #e0e0e0;
+}
+
+.divider span {
+  background: white;
+  padding: 0 15px;
+  position: relative;
+  color: #888;
+  font-size: 14px;
+}
+
+.modal-header {
+  background: linear-gradient(
+    135deg,
+    var(--navy-blue) 0%,
+    var(--accent-blue) 100%
+  );
+  color: white;
+  border-bottom: none;
+}
+
+.modal-header .btn-close {
+  filter: brightness(0) invert(1);
+}
+
+.modal-body {
+  padding: 30px;
+}
+
+.btn-verify,
+.btn-reset {
+  background: var(--accent-blue);
+  border: none;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.btn-verify:hover,
+.btn-reset:hover {
+  background: var(--navy-blue);
+  transform: translateY(-2px);
+}
+
+.alert {
+  border-radius: 10px;
+  border: none;
+}
+
+@media (max-width: 576px) {
+  .login-container {
+    margin: 10px;
+  }
+
+  .login-body {
+    padding: 30px 25px;
+  }
+
+  .login-header {
+    padding: 30px 20px;
+  }
+}

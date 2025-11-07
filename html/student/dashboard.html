@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Dashboard - Guidance Counseling</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy-blue: #001f3f;
+        --light-navy: #003366;
+        --accent-blue: #0074d9;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f7fa;
+      }
+
+      /* Sidebar Styles */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 260px;
+        background: var(--navy-blue);
+        color: white;
+        transition: all 0.3s;
+        z-index: 1000;
+        overflow-y: auto;
+      }
+
+      .sidebar.collapsed {
+        width: 80px;
+      }
+
+      .sidebar-header {
+        padding: 20px;
+        /* text-align: lef; */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .sidebar-header h4 {
+        font-size: 1.2rem;
+        margin-top: 10px;
+        transition: opacity 0.3s;
+      }
+
+      .sidebar.collapsed .sidebar-header h4,
+      .sidebar.collapsed .nav-text {
+        opacity: 0;
+        display: none;
+      }
+
+      .sidebar-nav {
+        padding: 20px 0;
+      }
+
+      .nav-item {
+        padding: 15px 25px;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+      }
+
+      .nav-item:hover {
+        background: var(--light-navy);
+        color: white;
+        padding-left: 30px;
+      }
+
+      .nav-item.active {
+        background: var(--accent-blue);
+        color: white;
+        border-left: 4px solid white;
+      }
+
+      .nav-item i {
+        font-size: 1.2rem;
+        width: 30px;
+      }
+
+      .nav-text {
+        margin-left: 15px;
+      }
+
+      /* Main Content */
+      .main-content {
+        margin-left: 260px;
+        padding: 30px;
+        transition: margin-left 0.3s;
+      }
+
+      .main-content.expanded {
+        margin-left: 80px;
+      }
+
+      .toggle-btn {
+        position: fixed;
+        top: 20px;
+        left: 270px;
+        background: var(--accent-blue);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 999;
+        transition: left 0.3s;
+        display: none;
+      }
+
+      .toggle-btn.collapsed {
+        left: 90px;
+      }
+
+      .header {
+        background: white;
+        padding: 20px 30px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .header h2 {
+        color: var(--navy-blue);
+        margin: 0;
+      }
+
+      /* Dashboard Cards */
+      .dashboard-card {
+        background: white;
+        border-radius: 10px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s;
+      }
+
+      .card-header-custom {
+        border-bottom: 2px solid var(--accent-blue);
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+      }
+
+      .card-header-custom h5 {
+        color: var(--navy-blue);
+        font-weight: 600;
+        margin: 0;
+      }
+
+      /* Appointment Status */
+      .appointment-status {
+        background: linear-gradient(
+          135deg,
+          var(--navy-blue),
+          var(--light-navy)
+        );
+        color: white;
+        padding: 30px;
+        border-radius: 10px;
+      }
+
+      .status-badge {
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      .status-pending {
+        background: #ffc107;
+        color: #000;
+      }
+
+      .status-scheduled {
+        background: #28a745;
+        color: white;
+      }
+
+      .status-cancelled {
+        background: #dc3545;
+        color: white;
+      }
+
+      /* Profile Snapshot */
+      .profile-snapshot {
+        height: 96%;
+      }
+
+      .profile-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: var(--accent-blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: white;
+        margin: 0 auto 15px;
+      }
+
+      /* Session History */
+      .session-item {
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .text-muted {
+        font-size: 0.8rem;
+      }
+
+      .text-muted span {
+        font-weight: 550;
+      }
+
+      .session-type {
+        color: var(--accent-blue);
+        font-weight: 600;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .sidebar {
+          left: -260px;
+        }
+
+        .sidebar.active {
+          left: 0;
+        }
+
+        .main-content {
+          margin-left: 0;
+        }
+
+        .toggle-btn {
+          left: 20px;
+          z-index: 1000;
+        }
+
+        .toggle-btn.collapsed {
+          left: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <i class="fas fa-user-graduate fa-2x"></i>
+        <h4>Guidance Counseling Management System</h4>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active">
+          <i class="fas fa-home"></i>
+          <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="./book-appointment.html" class="nav-item">
+          <i class="fas fa-calendar-plus"></i>
+          <span class="nav-text">Book Appointment</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-bell"></i>
+          <span class="nav-text">Notifications</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-user"></i>
+          <span class="nav-text">Profile</span>
+        </a>
+        <a
+          href="#"
+          class="nav-item"
+          onclick="return confirm('Are you sure you want to logout?')"
+        >
+          <i class="fas fa-sign-out-alt"></i>
+          <span class="nav-text">Logout</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- Toggle Button -->
+    <button class="toggle-btn" id="toggleBtn">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+      <div class="header">
+        <h2><i class="fas fa-th-large"></i> Student Dashboard</h2>
+        <p class="text-muted mb-0">
+          Welcome back! Here's your counseling overview
+        </p>
+      </div>
+
+      <div class="row">
+        <!-- My Appointment Status -->
+        <div class="col-lg-8 col-md-12">
+          <div class="dashboard-card appointment-status">
+            <h5><i class="fas fa-calendar-check"></i> My Appointment Status</h5>
+            <hr style="border-color: rgba(255, 255, 255, 0.3)" />
+            <div class="row mt-4">
+              <div class="col-md-6">
+                <h6><i class="fas fa-clock"></i> Next Session</h6>
+                <h4>November 15, 2025</h4>
+                <p class="mb-1">
+                  <i class="fas fa-stopwatch"></i> 10:00 AM - 11:00 AM
+                </p>
+                <p><i class="fas fa-user-tie"></i> Dr. Maria Santos</p>
+              </div>
+              <div class="col-md-6 text-md-end">
+                <p class="mb-2">Status:</p>
+                <span class="status-badge status-scheduled">Scheduled</span>
+                <p class="mt-3 mb-0">
+                  <small
+                    ><i class="fas fa-info-circle"></i> Room 301, Guidance
+                    Office</small
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Session History -->
+          <div class="dashboard-card">
+            <div class="card-header-custom">
+              <h5><i class="fas fa-history"></i> My Session History</h5>
+            </div>
+            <div class="session-item">
+              <div>
+                <div class="session-type">Academic Counseling</div>
+                <small class="text-muted"
+                  >October 28, 2025 - Dr. Maria Santos</small
+                >
+              </div>
+              
+            </div>
+            <div class="session-item">
+              <div>
+                <div class="session-type">Career Guidance</div>
+                <small class="text-muted"
+                  >October 15, 2025 - Ms. Ana Cruz</small
+                >
+              </div>
+              
+            </div>
+            <div class="session-item">
+              <div>
+                <div class="session-type">Personal Development</div>
+                <small class="text-muted"
+                  >October 5, 2025 - Dr. Maria Santos</small
+                >
+              </div>
+              
+            </div>
+            <!-- <div class="text-center mt-3">
+              <a href="#" class="text-decoration-none"
+                >View All Sessions <i class="fas fa-arrow-right"></i
+              ></a>
+            </div> -->
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-lg-4 col-md-12">
+          <!-- Profile Snapshot -->
+          <div class="dashboard-card profile-snapshot">
+            <div class="card-header-custom">
+              <h5><i class="fas fa-user-circle"></i> My Profile</h5>
+            </div>
+            <div class="">
+              <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+              </div>
+              <h5 class="text-center">Juan Dela Cruz</h5>
+              <p class="text-muted mb-5 text-center">991230</p>
+              <p class="text-muted mb-1">
+                <span>DEPARTMENT:</span> College of Information Technology
+              </p>
+              <p class="text-muted mb-1">
+                <span>COURSE:</span> Bachelor of Science in Computer Science
+              </p>
+              <p class="text-muted mb-1">
+                <span>YEAR LEVEL:</span> 4th Year
+              </p>
+              <p class="text-muted">
+                <span>GENDER:</span> Male
+              </p>
+              <button class="btn btn-outline-primary mt-2 w-100 ">
+                <i class="fas fa-edit"></i> Edit Profile
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // function toggleSidebar() {
+      //     const sidebar = document.getElementById('sidebar');
+      //     const mainContent = document.getElementById('mainContent');
+      //     const toggleBtn = document.getElementById('toggleBtn');
+
+      //     sidebar.classList.toggle('collapsed');
+      //     mainContent.classList.toggle('expanded');
+      //     toggleBtn.classList.toggle('collapsed');
+      // }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const toggleBtn = document.getElementById("toggleBtn");
+        const sidebar = document.getElementById("sidebar");
+        if (!toggleBtn || !sidebar) return;
+
+        // named handler so we can remove it later
+        function onToggleClick() {
+          sidebar.classList.toggle("active");
+          toggleBtn.setAttribute(
+            "aria-expanded",
+            sidebar.classList.contains("active")
+          );
+        }
+
+        function updateForViewport() {
+          if (window.innerWidth <= 768) {
+            toggleBtn.style.display = "block";
+            // attach only once
+            if (!toggleBtn._hasHandler) {
+              toggleBtn.addEventListener("click", onToggleClick);
+              toggleBtn._hasHandler = true;
+            }
+          } else {
+            toggleBtn.style.display = "none";
+            if (toggleBtn._hasHandler) {
+              toggleBtn.removeEventListener("click", onToggleClick);
+              toggleBtn._hasHandler = false;
+            }
+            // ensure sidebar is visible/hidden according to your desktop layout:
+            sidebar.classList.remove("active");
+            toggleBtn.setAttribute("aria-expanded", "false");
+          }
+        }
+
+        window.addEventListener("resize", updateForViewport);
+        updateForViewport(); // initial call
+      });
+    </script>
+  </body>
+</html>
