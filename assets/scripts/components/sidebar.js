@@ -3,6 +3,13 @@ function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("active");
 }
 
+// Toggle Submenu
+function toggleSubmenu(event) {
+  event.preventDefault();
+  const submenu = document.getElementById("userSubmenu");
+  submenu.classList.toggle("show");
+}
+
 // Close sidebar when clicking outside on mobile
 document.addEventListener("click", function (e) {
   const sidebar = document.getElementById("sidebar");
