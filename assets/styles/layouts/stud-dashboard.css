@@ -1,4 +1,4 @@
-@import url('../components/variables.css');
+@import url("../components/variables.css");
 
 * {
   margin: 0;
@@ -156,9 +156,46 @@ body {
   font-weight: 550;
 }
 
+.session-container {
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
 .session-type {
   color: var(--accent-blue);
   font-weight: 600;
+}
+
+.no-sessions {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+}
+
+.no-sessions i {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: #ddd;
+}
+
+.no-sessions p {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-blue);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background:transparent;
+  border-radius: 8px;
 }
 
 /* Responsive */
@@ -166,5 +203,4 @@ body {
   .main-content {
     margin-left: 0;
   }
-
 }

@@ -1,41 +1,32 @@
-// Store verification code for demo purposes
 let generatedCode = "";
 let userEmail = "";
 
-// Login form submission
 document.getElementById("loginForm").addEventListener("submit", function (e) {
   e.preventDefault();
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
   const rememberMe = document.getElementById("rememberMe").checked;
 
-  // Demo login logic
-  alert(
-    `Login attempted with:\nUsername: ${username}\nRemember Me: ${rememberMe}`
-  );
+  if (username === "stud" && password === "stud") {
+    window.location.href = "./html/student/dashboard.html";
+    localStorage.setItem("rememberMe", rememberMe);
+  } else {
+    alert("Invalid username or password.");
+  }
 });
 
-// Step 1: Send verification code
 function sendVerificationCode() {
-  const email = document.getElementById("resetEmail").value;
+  const phoneNumber = document.getElementById("resetPhoneNumber").value;
   const alertDiv = document.getElementById("emailAlert");
 
-  if (!email || !email.includes("@")) {
-    alertDiv.innerHTML =
-      '<div class="alert alert-danger">Please enter a valid email address.</div>';
-    return;
-  }
-
-  // Generate random 6-digit code
   generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-  userEmail = email;
+  userEmail = phoneNumber;
   console.log(generatedCode);
   alertDiv.innerHTML =
     '<div class="alert alert-success">Verification code sent! (Demo code: ' +
     generatedCode +
     ")</div>";
 
-  // Move to verification modal after 2 seconds
   setTimeout(() => {
     bootstrap.Modal.getInstance(
       document.getElementById("forgotPasswordModal")
@@ -44,7 +35,6 @@ function sendVerificationCode() {
   }, 2000);
 }
 
-// Step 2: Verify code
 function verifyCode() {
   const code = document.getElementById("verificationCode").value;
   const alertDiv = document.getElementById("codeAlert");
@@ -53,7 +43,6 @@ function verifyCode() {
     alertDiv.innerHTML =
       '<div class="alert alert-success">Code verified successfully!</div>';
 
-    // Move to reset password modal after 1.5 seconds
     setTimeout(() => {
       bootstrap.Modal.getInstance(
         document.getElementById("verificationModal")
@@ -66,7 +55,6 @@ function verifyCode() {
   }
 }
 
-// Step 3: Reset password
 function resetPassword() {
   const newPassword = document.getElementById("newPassword").value;
   const confirmPassword = document.getElementById("confirmPassword").value;
@@ -87,12 +75,11 @@ function resetPassword() {
   alertDiv.innerHTML =
     '<div class="alert alert-success">Password reset successfully!</div>';
 
-  // Close modal and reset form after 2 seconds
   setTimeout(() => {
     bootstrap.Modal.getInstance(
       document.getElementById("resetPasswordModal")
     ).hide();
-    document.getElementById("resetEmail").value = "";
+    document.getElementById("resetPhoneNumber").value = "";
     document.getElementById("verificationCode").value = "";
     document.getElementById("newPassword").value = "";
     document.getElementById("confirmPassword").value = "";
@@ -101,7 +88,6 @@ function resetPassword() {
   }, 2000);
 }
 
-// Clear alerts when modals are closed
 document.querySelectorAll(".modal").forEach((modal) => {
   modal.addEventListener("hidden.bs.modal", function () {
     this.querySelectorAll(".alert").forEach((alert) => alert.remove());

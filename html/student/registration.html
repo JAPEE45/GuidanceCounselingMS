@@ -12,176 +12,10 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
       rel="stylesheet"
     />
-    <style>
-      :root {
-        --navy-blue: #001f3f;
-        --light-navy: #003366;
-        --accent-blue: #0074d9;
-      }
-
-      body {
-        background-color: white;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      }
-
-      .navbar {
-        background-color: var(--navy-blue) !important;
-        padding: 1rem 0;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      .navbar-brand {
-        color: white !important;
-        font-weight: 600;
-        font-size: 1.5rem;
-      }
-
-      .registration-header {
-        background: linear-gradient(
-          135deg,
-          var(--navy-blue) 0%,
-          var(--light-navy) 100%
-        );
-        color: white;
-        padding: 3rem 0;
-        margin-bottom: 2rem;
-      }
-
-      .registration-header h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-      }
-
-      .registration-header p {
-        font-size: 1.1rem;
-        opacity: 0.9;
-      }
-
-      .form-section {
-        padding: 2rem 0;
-      }
-
-      .section-title {
-        color: var(--navy-blue);
-        font-weight: 600;
-        font-size: 1.3rem;
-        margin-bottom: 1.5rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid var(--accent-blue);
-      }
-
-      .form-label {
-        color: var(--navy-blue);
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-      }
-
-      .form-control,
-      .form-select {
-        border: 1px solid #ddd;
-        padding: 0.75rem;
-        border-radius: 0.5rem;
-        transition: all 0.3s ease;
-      }
-
-      .form-control:focus,
-      .form-select:focus {
-        border-color: var(--accent-blue);
-        box-shadow: 0 0 0 0.2rem rgba(0, 116, 217, 0.25);
-      }
-
-      .btn-primary {
-        background-color: var(--accent-blue);
-        border: none;
-        padding: 0.75rem 2rem;
-        font-weight: 600;
-        border-radius: 0.5rem;
-        transition: all 0.3s ease;
-      }
-
-      .btn-primary:hover {
-        background-color: var(--light-navy);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
-
-      .btn-secondary {
-        background-color: #6c757d;
-        border: none;
-        padding: 0.75rem 2rem;
-        font-weight: 600;
-        border-radius: 0.5rem;
-      }
-
-      .login-link {
-        text-align: center;
-        margin-top: 2rem;
-        padding: 1.5rem;
-        background-color: #f8f9fa;
-        border-radius: 0.5rem;
-      }
-
-      .login-link a {
-        color: var(--accent-blue);
-        font-weight: 600;
-        text-decoration: none;
-      }
-
-      .login-link a:hover {
-        color: var(--light-navy);
-        text-decoration: underline;
-      }
-
-      .modal-header {
-        background-color: var(--navy-blue);
-        color: white;
-      }
-
-      .modal-title {
-        font-weight: 600;
-      }
-
-      .verification-input {
-        font-size: 1.5rem;
-        text-align: center;
-        letter-spacing: 0.5rem;
-        padding: 1rem;
-      }
-
-      .alert-info {
-        background-color: #e3f2fd;
-        border-color: var(--accent-blue);
-        color: var(--navy-blue);
-      }
-
-      .required::after {
-        content: " *";
-        color: #dc3545;
-      }
-
-      @media (max-width: 768px) {
-        .registration-header h1 {
-          font-size: 2rem;
-        }
-
-        .registration-header p {
-          font-size: 1rem;
-        }
-      }
-    </style>
+    
+    <link rel="stylesheet" href="../../assets/styles/layouts/stud-registration.css">
   </head>
   <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-dark">
-      <div class="container-fluid px-4">
-        <span class="navbar-brand">
-          <i class="fas fa-user-graduate me-2"></i>
-          Guidance Counseling Management System
-        </span>
-      </div>
-    </nav>
-
     <!-- Header -->
     <div class="registration-header">
       <div class="container">
@@ -239,7 +73,7 @@
                 type="tel"
                 class="form-control"
                 id="contactNumber"
-                placeholder="+63 XXX XXX XXXX"
+                placeholder="11 digit phone number (09123456789)"
                 required
               />
             </div>
@@ -263,7 +97,7 @@
                 >Department</label
               >
               <select class="form-select" id="department" required>
-                <option value="">Select Department</option>
+                <option value="" hidden>Select Department</option>
                 <option value="College of Engineering">
                   College of Engineering
                 </option>
@@ -299,12 +133,11 @@
                 >Year Level</label
               >
               <select class="form-select" id="yearLevel" required>
-                <option value="">Select Year Level</option>
+                <option value="" hidden>Select Year Level</option>
                 <option value="1st Year">1st Year</option>
                 <option value="2nd Year">2nd Year</option>
                 <option value="3rd Year">3rd Year</option>
                 <option value="4th Year">4th Year</option>
-                <option value="5th Year">5th Year</option>
               </select>
             </div>
           </div>
