@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments - Guidance Counseling System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css">
+    <link rel="stylesheet" href="../../assets/styles/layouts/admin-appointments.css">
+</head>
+<body>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <h4><i class="fas fa-graduation-cap"></i> Guidance Counseling</h4>
+      </div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="./dashboard.html" class=""><i class="fas fa-home"></i> Dashboard</a>
+        </li>
+        <li>
+          <a href="./counselors.html" ><i class="fas fa-user-tie"></i> Counselors</a>
+        </li>
+        <!-- <li>
+          <a href="#" class="nav-link" onclick="toggleSubmenu(event)">
+            <i class="fas fa-users"></i>
+            <span>User Management</span>
+            <i
+              class="fas fa-chevron-down ms-auto"
+              style="font-size: 0.8rem"
+            ></i>
+          </a>
+          <div class="submenu" id="userSubmenu">
+            <a href="#" class="nav-link">
+              <i class="fas fa-user-graduate"></i>
+              <span>Students</span>
+            </a>
+            <a href="#" class="nav-link">
+              <i class="fas fa-user-tie"></i>
+              <span>Counselors</span>
+            </a>
+          </div>
+        </li> -->
+        <li>
+          <a href="#" class="active"
+            ><i class="fa-solid fa-calendar-check"></i> Appointments</a
+          >
+        </li>
+        <li>
+          <a href="./notifications.html" class="notif-referrals"
+            ><i class="fas fa-bell"></i> Notifications & Referrals</a
+          >
+        </li>
+        <li>
+          <a href="./profile.html"
+            ><i class="fa-solid fa-user-circle"></i> Profile</a
+          >
+        </li>
+        <li>
+          <a href="../../index.html"
+            ><i class="fas fa-sign-out-alt"></i> Logout</a
+          >
+        </li>
+      </ul>
+    </aside>
+
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-header">
+            <h2><i class="fas fa-calendar-check"></i> Appointments Management</h2>
+        </div>
+
+        <!-- Tab Buttons -->
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="switchTab('pending')">
+                <i class="fas fa-clock"></i> List of Appointments
+            </button>
+            <button class="tab-btn" onclick="switchTab('history')">
+                <i class="fas fa-history"></i> History of Appointments
+            </button>
+        </div>
+
+        <!-- Pending Appointments Section -->
+        <div id="pending-section" class="appointments-section active">
+            <div id="pending-appointments"></div>
+        </div>
+
+        <!-- History Appointments Section -->
+        <div id="history-section" class="appointments-section">
+            <div id="history-appointments"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn-action btn-approve" id="approveBtn" disabled onclick="showConfirmModal('approve')">
+                <i class="fas fa-check"></i> Approve
+            </button>
+            <button class="btn-action btn-decline" id="declineBtn" disabled onclick="showConfirmModal('decline')">
+                <i class="fas fa-times"></i> Decline
+            </button>
+            <button class="btn-action btn-reschedule" id="rescheduleBtn" disabled onclick="showConfirmModal('reschedule')">
+                <i class="fas fa-calendar-alt"></i> Reschedule
+            </button>
+        </div>
+    </div>
+
+    <!-- Appointment Details Modal -->
+    <div class="modal fade" id="appointmentModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Appointment Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Content will be dynamically inserted -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approve Confirmation Modal -->
+    <div class="modal fade" id="approveModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Approve Appointment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to approve this appointment?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" onclick="processAction('approve')">Yes, Approve</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decline Confirmation Modal -->
+    <div class="modal fade" id="declineModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Decline Appointment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to decline this appointment?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="processAction('decline')">Yes, Decline</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reschedule Confirmation Modal -->
+    <div class="modal fade" id="rescheduleModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #0074d9; color: white;">
+                    <h5 class="modal-title">Reschedule Appointment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to reschedule this appointment?</p>
+                    <div class="mb-3">
+                        <label class="form-label">New Date & Time</label>
+                        <input type="datetime-local" class="form-control" id="newDateTime">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="processAction('reschedule')">Confirm Reschedule</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/scripts/components/sidebar.js"></script>
+    <script src="../../assets/scripts/admin-appointments.js"></script>
+</body>
+</html>

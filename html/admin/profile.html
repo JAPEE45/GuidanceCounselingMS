@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Profile - Guidance Counseling System</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css" />
+    <link
+      rel="stylesheet"
+      href="../../assets/styles/layouts/stud-profile.css"
+    />
+  </head>
+  <body>
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Overlay for mobile -->
+    <div class="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <h4><i class="fas fa-graduation-cap"></i> Guidance Counseling</h4>
+      </div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="./dashboard.html" class=""
+            ><i class="fas fa-home"></i> Dashboard</a
+          >
+        </li>
+        <li>
+          <a href="./book-appointment.html" class=""
+            ><i class="fas fa-calendar-check"></i> Book Appointment</a
+          >
+        </li>
+        <li>
+          <a href="./notifications.html" class=""
+            ><i class="fas fa-bell"></i> Notification</a
+          >
+        </li>
+        <li>
+          <a href="#" class="active"><i class="fa-solid fa-user-circle"></i> Profile</a>
+        </li>
+        <li>
+          <a href="../../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Profile Container -->
+      <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+          <div class="profile-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <h3 id="displayName">Juan Dela Cruz</h3>
+          <p id="displayId">Student ID: 2024-00001</p>
+        </div>
+
+        <!-- Profile Body -->
+        <div class="profile-body">
+          <!-- View Mode -->
+          <div id="viewMode">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h4 class="section-title mb-0">Personal Information</h4>
+              <button class="btn-edit" onclick="enableEdit()">
+                <i class="fas fa-edit me-2"></i>Edit Profile
+              </button>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="info-group">
+                  <div class="info-label">Full Name</div>
+                  <div class="info-value" id="viewName">Juan Dela Cruz</div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-group">
+                  <div class="info-label">School ID</div>
+                  <div class="info-value" id="viewSchoolId">2024-00001</div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-group">
+                  <div class="info-label">Birthday</div>
+                  <div class="info-value" id="viewBirthday">
+                    January 15, 2003
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-group">
+                  <div class="info-label">Gender</div>
+                  <div class="info-value" id="viewGender">Male</div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-group">
+                  <div class="info-label">Phone Number</div>
+                  <div class="info-value" id="viewPhone">+63 912 345 6789</div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-group">
+                  <div class="info-label">Department</div>
+                  <div class="info-value" id="viewDepartment">
+                    College of Computer Studies
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-group">
+                  <div class="info-label">Course</div>
+                  <div class="info-value" id="viewCourse">
+                    Bachelor of Science in Information Technology
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-group">
+                  <div class="info-label">Year Level</div>
+                  <div class="info-value" id="viewYearLevel">3rd Year</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Edit Mode -->
+          <div id="editMode" style="display: none">
+            <h4 class="section-title">Edit Personal Information</h4>
+            <form id="profileForm">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Full Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editName"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">School ID</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editSchoolId"
+                    readonly
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Birthday</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="editBirthday"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Gender</label>
+                  <select class="form-control" id="editGender" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Phone Number</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="editPhone"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Department</label>
+                  <select class="form-control" id="editDepartment" required>
+                    <option value="">Select Department</option>
+                    <option value="College of Computer Studies">
+                      College of Computer Studies
+                    </option>
+                    <option value="College of Engineering">
+                      College of Engineering
+                    </option>
+                    <option value="College of Business">
+                      College of Business
+                    </option>
+                    <option value="College of Arts and Sciences">
+                      College of Arts and Sciences
+                    </option>
+                    <option value="College of Education">
+                      College of Education
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Course</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editCourse"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Year Level</label>
+                  <select class="form-control" id="editYearLevel" required>
+                    <option value="">Select Year Level</option>
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                    <option value="4th Year">4th Year</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mt-4">
+                <button type="submit" class="btn-edit me-2">
+                  <i class="fas fa-save me-2"></i>Save Changes
+                </button>
+                <button type="button" class="btn-cancel" onclick="cancelEdit()">
+                  <i class="fas fa-times me-2"></i>Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/scripts/components/sidebar.js"></script>
+    <script src="../../assets/scripts/stud-profile.js"></script>
+  </body>
+</html>

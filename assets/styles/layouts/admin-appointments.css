@@ -1,0 +1,239 @@
+@import url("../components/variables.css");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f5f5;
+}
+
+.main-content {
+  margin-left: 250px;
+  padding: 30px;
+}
+
+.page-header {
+  background: transparent;
+  /* padding: 25px; */
+  /* border-radius: 10px; */
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  margin-bottom: 40px;
+}
+
+.page-header h2 {
+  color: var(--navy-blue);
+  margin: 0;
+}
+
+.tab-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.tab-btn {
+  padding: 10px 25px;
+  border: none;
+  background: white;
+  color: var(--navy-blue);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tab-btn.active {
+  background: var(--accent-blue);
+  color: white;
+}
+
+.appointments-section {
+  display: none;
+}
+
+.appointments-section.active {
+  display: block;
+}
+
+.date-group {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.date-header {
+  color: var(--navy-blue);
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--accent-blue);
+}
+
+.appointment-item {
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: #fafafa;
+}
+
+.appointment-item:hover {
+  border-color: var(--accent-blue);
+  background: #f0f7ff;
+}
+
+.appointment-item.selected {
+  border-color: var(--accent-blue);
+  background: #e3f2fd;
+  box-shadow: 0 0 0 3px rgba(0, 116, 217, 0.2);
+}
+
+.appointment-time {
+  font-weight: 600;
+  color: var(--navy-blue);
+}
+
+.appointment-type {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.type-academic {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.type-physical {
+  background: #e8f5e9;
+  color: #388e3c;
+}
+
+.type-intellectual {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.type-environmental {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.action-buttons {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.btn-action {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-approve {
+  background: #4caf50;
+  color: white;
+}
+
+.btn-approve:hover:not(:disabled) {
+  background: #45a049;
+}
+
+.btn-decline {
+  background: #f44336;
+  color: white;
+}
+
+.btn-decline:hover:not(:disabled) {
+  background: #da190b;
+}
+
+.btn-reschedule {
+  background: var(--accent-blue);
+  color: white;
+}
+
+.btn-reschedule:hover:not(:disabled) {
+  background: #0062cc;
+}
+
+.modal-header {
+  background: var(--navy-blue);
+  color: white;
+}
+
+.modal-header .btn-close {
+  filter: brightness(0) invert(1);
+}
+
+.data-item {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.data-item:last-child {
+  border-bottom: none;
+}
+
+.data-question {
+  font-weight: 600;
+  color: var(--navy-blue);
+  margin-bottom: 8px;
+}
+
+.data-answer {
+  color: #555;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .main-content {
+    margin-left: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+}
