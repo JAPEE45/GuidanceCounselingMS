@@ -1,0 +1,156 @@
+ALIS (Leave Management System) - 20,000:
+5000
+	PAYMENT: 7,500
+	BALANCE: 12,500
+
+PROTOTYPE:
+3250
+
+MISCELLANEOUS:
+500
+500
+
+JASPER:
+	PAYMENT: 3000
+	BALANCE: 7,000
+
+CHRISTIAN:
+	PAYMENT: 2,000
+	BALANCE: 8,000
+-----------------------------------------
+MotoCare (Auto Repair Hub) - 14,000:
+5000
+	PAYMENT: 5,000
+	BALANCE: 9,000
+
+JASPER:
+	PAYMENT: 5,000
+	BALANCE: 2,000
+
+CHRISTIAN:
+	PAYMENT: 7,000
+	BALANCE: 0
+--------------------------------------------------
+Alagang Baras (Livestock Management System) - 10,000:
+2000
+	PAYMENT: 2,000
+	BALANCE: 8,000
+
+JASPER:
+	PAYMENT: 0
+	BALANCE: 5000
+
+CJ:
+	PAYMENT: 0
+	BALANCE: 5000
+--------------------------------------------------
+Red Cross Volunteer WebApp - 15,000:
+1000
+1000
+1000
+1000
+1700
+1000
+800
+1750
+1500
+1000
+
+	PAYMENT: 11,750
+	BALANCE: 3,250
+
+INZO: 
+	PAYMENT: 2750
+	BALANCE: 0
+
+CJ:
+	PAYMENT: 0
+	BALANCE: 4,750
+
+JASPER: 
+	TOTAL PAYMENT: 1000
+	BALANCE: 6,500
+----------------------------------------------------
+BFP Site-Profiler - 20,000:
+3000
+1000
+1600
+1000
+300
+700
+	PAYMENT: 7,600
+	BALANCE: 12,400
+
+CJ:
+	PAYMENT: 0
+	BALANCE: 10,000
+
+JASPER:
+	PAYMENT: 7,500
+	BALANCE: 2,500
+---------------------------------------------------
+MediaCare Hub - 25,000:
+5000
+	PAYMENT: 5,000
+	BALANCE: 25,000
+
+CJ:
+	PAYMENT: 0
+	BALANCE: 12,500
+
+JASPER:
+	PAYMENT: 12,500
+	BALANCE: 0
+---------------------------------------------------
+
+AGAY - 5000
+5000
+	PAYMENT: 5000
+	BALANCE: 0
+
+CJ:
+	PAYMENT: 0
+	BALANCE: 2500
+
+JASPER:
+	PAYMENT: 2500
+	BALANCE: 0
+
+---------------------------------------------------
+
+GUIDANCE COUNSELING MANAGEMENT SYSTEM - 15000
+0
+	PAYMENT: 0
+	BALANCE: 15,000
+
+
+CJ:
+	PAYMENT: 0
+	BALANCE: 7,500
+
+JASPER:
+	PAYMENT: 0
+	BALANCE: 7,500
+
+---------------------------------------------------
+
+(INZO):
+	TOTAL PAYMENT: 2750
+	TOTAL BALANCE: 0
+
+(CJ):
+	TOTAL PAYMENT: 9,000
+	TOTAL BALANCE: 42,750
+
+(JASPER):
+	TOTAL PAYMENT: 31,500
+	TOTAL BALANCE: 23,000
+----------------------------------
+DISTRIBUTED: 43,250
+NOT DISTRIBUTED: 600
+
+TOTAL PAYMENT: 43,850
+TOTAL BALANCE: 65,150
+
+
+TOTAL: 109,000
