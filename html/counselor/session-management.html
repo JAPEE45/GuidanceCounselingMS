@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Session Management</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css" />
+  </head>
+  <body>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <h4><i class="fas fa-graduation-cap"></i> Guidance Counseling</h4>
+      </div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="./dashboard.html" class=""
+            ><i class="fas fa-home"></i> Dashboard</a
+          >
+        </li>
+        <li>
+          <a href="./my-schedule.html" class=""
+            ><i class="fas fa-calendar-alt"></i> My Schedule</a
+          >
+        </li>
+        <!-- <li>
+          <a href="#" class="nav-link" onclick="toggleSubmenu(event)">
+            <i class="fas fa-users"></i>
+            <span>User Management</span>
+            <i
+              class="fas fa-chevron-down ms-auto"
+              style="font-size: 0.8rem"
+            ></i>
+          </a>
+          <div class="submenu" id="userSubmenu">
+            <a href="#" class="nav-link">
+              <i class="fas fa-user-graduate"></i>
+              <span>Students</span>
+            </a>
+            <a href="#" class="nav-link">
+              <i class="fas fa-user-tie"></i>
+              <span>Counselors</span>
+            </a>
+          </div>
+        </li> -->
+        <li>
+          <a href="#" class="active"
+            ><i class="fas fa-clipboard-list"></i> Session Management</a
+          >
+        </li>
+        <li>
+          <a href="./student-record.html" class="notif-referrals"
+            ><i class="fas fa-user-graduate"></i> Student Record</a
+          >
+        </li>
+        <li>
+          <a href="./profile.html"
+            ><i class="fa-solid fa-user-circle"></i> Profile</a
+          >
+        </li>
+        <li>
+          <a href="../../index.html"
+            ><i class="fas fa-sign-out-alt"></i> Logout</a
+          >
+        </li>
+      </ul>
+    </aside>
+
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <script src="../../assets/scripts/components/sidebar.js"></script>
+  </body>
+</html>

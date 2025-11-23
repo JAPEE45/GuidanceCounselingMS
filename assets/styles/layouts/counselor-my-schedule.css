@@ -1,0 +1,271 @@
+@import url('../components/variables.css');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f9;
+}
+
+.main-content {
+  margin-left: 250px;
+  padding: 30px;
+}
+
+.header {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.header h2 {
+  color: var(--navy-blue);
+  font-weight: 600;
+  margin: 0;
+}
+
+.calendar-container {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.calendar-header h3 {
+  color: var(--navy-blue);
+  margin: 0;
+}
+
+.calendar-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.calendar-nav button {
+  background-color: var(--accent-blue);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.calendar-nav button:hover {
+  background-color: var(--navy-blue);
+}
+
+.calendar {
+  width: 100%;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.weekday {
+  text-align: center;
+  font-weight: 600;
+  color: var(--navy-blue);
+  padding: 10px;
+  background-color: #f0f4f8;
+  border-radius: 5px;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.day {
+  aspect-ratio: 1;
+  padding: 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: white;
+  position: relative;
+}
+
+.day:hover {
+  border-color: var(--accent-blue);
+  transform: scale(1.05);
+}
+
+.day.other-month {
+  color: #ccc;
+  background-color: #f9f9f9;
+}
+
+.day.today {
+  border-color: var(--accent-blue);
+  background-color: #e6f2ff;
+}
+
+.day.has-sessions {
+  background-color: #fff3cd;
+  border-color: var(--accent-blue);
+}
+
+.day-number {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--navy-blue);
+}
+
+.session-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: var(--accent-blue);
+  color: white;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.modal-header {
+  background: linear-gradient(
+    135deg,
+    var(--navy-blue) 0%,
+    var(--accent-blue) 100%
+  );
+  color: white;
+}
+
+.session-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+}
+
+.session-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.session-time {
+  font-weight: 600;
+  color: var(--navy-blue);
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.student-name {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.wellness-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.wellness-physical {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.wellness-intellectual {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.wellness-environmental {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.wellness-emotional {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.session-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-confirm {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-confirm:hover {
+  background-color: #218838;
+}
+
+.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-cancel:hover {
+  background-color: #c82333;
+}
+
+.no-sessions {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+
+  .calendar-days,
+  .calendar-weekdays {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+  }
+
+  .day {
+    padding: 5px;
+    font-size: 12px;
+  }
+}

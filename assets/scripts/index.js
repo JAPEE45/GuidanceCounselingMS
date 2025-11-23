@@ -10,6 +10,12 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
   if (username === "stud" && password === "stud") {
     window.location.href = "./html/student/dashboard.html";
     localStorage.setItem("rememberMe", rememberMe);
+  } else if (username === "counselor" && password === "counselor") {
+    window.location.href = "./html/counselor/dashboard.html";
+    localStorage.setItem("rememberMe", rememberMe);
+  } else if (username === "admin" && password === "admin") {
+    window.location.href = "./html/admin/dashboard.html";
+    localStorage.setItem("rememberMe", rememberMe);
   } else {
     alert("Invalid username or password.");
   }
