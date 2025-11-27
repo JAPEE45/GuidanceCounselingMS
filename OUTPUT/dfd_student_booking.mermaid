@@ -1,0 +1,30 @@
+flowchart TD
+    %% Standard DFD Shapes
+    classDef process fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,rx:10,ry:10;
+    classDef entity fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,shape:rect;
+    classDef store fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,shape:cylinder;
+
+    %% Nodes
+    Student[Student]:::entity
+    Process1[1. Login & Auth]:::process
+    Process2[2. Check Schedule]:::process
+    Process3[3. Submit Booking]:::process
+    Process4[4. Notify Counselor]:::process
+    
+    DB_Users[(Users DB)]:::store
+    DB_Appt[(Appointments DB)]:::store
+    DB_Notif[(Notifications DB)]:::store
+
+    %% Flow
+    Student -->|Credentials| Process1
+    Process1 <-->|Validate| DB_Users
+    
+    Process1 -->|Token| Process2
+    Process2 <-->|Get Slots| DB_Appt
+    
+    Student -->|Select Date/Time + Wellness Info| Process3
+    Process3 -->|Save Appointment| DB_Appt
+    
+    Process3 -->|Trigger| Process4
+    Process4 -->|Save Alert| DB_Notif
+    Process4 -->|Email Sent| Counselor[Counselor]:::entity

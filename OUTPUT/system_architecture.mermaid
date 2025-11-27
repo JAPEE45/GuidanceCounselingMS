@@ -1,0 +1,38 @@
+
+graph LR
+    %% Styling
+    classDef tier fill:#f5f5f5,stroke:#333,stroke-width:1px,stroke-dasharray: 5 5;
+    classDef component fill:#e3f2fd,stroke:#0277bd,stroke-width:2px;
+    classDef database fill:#fff8e1,stroke:#ff6f00,stroke-width:2px;
+
+    subgraph Presentation ["1. Presentation Layer (Frontend)"]
+        direction TB
+        Browser[Web Browser]:::component
+        UI[HTML5 / CSS3 / Bootstrap]:::component
+        JS[Vanilla JavaScript]:::component
+        Browser --- UI
+        UI --- JS
+    end
+
+    subgraph Application ["2. Application Layer (Backend)"]
+        direction TB
+        Server[Apache Web Server]:::component
+        Logic[PHP Core Logic]:::component
+        Mailer[PHPMailer Service]:::component
+        Server --- Logic
+        Logic --- Mailer
+    end
+
+    subgraph Data ["3. Data Layer (Storage)"]
+        direction TB
+        DB[(MySQL Database)]:::database
+    end
+
+    %% Interactions
+    JS -->|HTTP Requests AJAX| Server
+    Logic -->|SQL Queries| DB
+    DB -->|Data Result| Logic
+    Logic -->|JSON Response| JS
+
+    %% Style Containers
+    class Presentation,Application,Data tier

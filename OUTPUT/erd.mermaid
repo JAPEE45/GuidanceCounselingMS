@@ -1,0 +1,51 @@
+erDiagram
+    %% Research Standard: Crow's Foot Notation
+    %% Entities
+    USER ||--o{ STUDENT : "has profile"
+    USER ||--o{ COUNSELOR : "has profile"
+    USER ||--o{ ADMIN : "has profile"
+    
+    STUDENT ||--o{ APPOINTMENT : "requests"
+    COUNSELOR ||--o{ APPOINTMENT : "manages"
+    
+    APPOINTMENT ||--|| COUNSELING_RECORD : "generates"
+    USER ||--o{ NOTIFICATION : "receives"
+
+    %% Attributes (Simplified for Readability)
+    USER {
+        int user_id PK
+        string email
+        string role
+    }
+
+    STUDENT {
+        int student_id PK
+        string name
+        string course
+        json wellness_data
+    }
+
+    COUNSELOR {
+        int counselor_id PK
+        string name
+        string specialization
+    }
+
+    APPOINTMENT {
+        int appointment_id PK
+        date date
+        time time
+        string status
+    }
+
+    COUNSELING_RECORD {
+        int record_id PK
+        text session_notes
+        text recommendations
+    }
+
+    NOTIFICATION {
+        int id PK
+        string message
+        bool is_read
+    }
