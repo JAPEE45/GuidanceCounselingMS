@@ -1,78 +1,7 @@
 // Sample Data - Counseling Sessions
-const sessionsData = [
-  {
-    id: 1,
-    date: "2025-11-25",
-    time: "09:00 AM",
-    studentName: "Maria Santos",
-    type: "Physical Wellness",
-    status: "pending",
-  },
-  {
-    id: 2,
-    date: "2025-11-25",
-    time: "10:30 AM",
-    studentName: "Juan Dela Cruz",
-    type: "Intellectual Wellness",
-    status: "pending",
-  },
-  {
-    id: 3,
-    date: "2025-11-25",
-    time: "02:00 PM",
-    studentName: "Ana Reyes",
-    type: "Emotional Wellness",
-    status: "pending",
-  },
-  {
-    id: 4,
-    date: "2025-11-27",
-    time: "11:00 AM",
-    studentName: "Pedro Garcia",
-    type: "Environmental Awareness",
-    status: "pending",
-  },
-  {
-    id: 5,
-    date: "2025-11-27",
-    time: "03:00 PM",
-    studentName: "Sofia Martinez",
-    type: "Physical Wellness",
-    status: "pending",
-  },
-  {
-    id: 6,
-    date: "2025-11-29",
-    time: "09:30 AM",
-    studentName: "Carlos Lopez",
-    type: "Intellectual Wellness",
-    status: "pending",
-  },
-  {
-    id: 7,
-    date: "2025-12-02",
-    time: "10:00 AM",
-    studentName: "Isabella Cruz",
-    type: "Emotional Wellness",
-    status: "pending",
-  },
-  {
-    id: 8,
-    date: "2025-12-02",
-    time: "01:30 PM",
-    studentName: "Miguel Torres",
-    type: "Environmental Awareness",
-    status: "pending",
-  },
-  {
-    id: 9,
-    date: "2025-12-05",
-    time: "11:30 AM",
-    studentName: "Elena Fernandez",
-    type: "Physical Wellness",
-    status: "pending",
-  },
-];
+// Check if sessionsData is already defined (e.g. from PHP), otherwise use empty array
+var sessionsData = window.sessionsData || [];
+
 
 let currentDate = new Date();
 let sessions = [...sessionsData];
@@ -155,7 +84,7 @@ function createDayElement(day, isOtherMonth, year, month) {
 
   // Check for sessions
   const daySessions = sessions.filter(
-    (s) => s.date === dateStr && s.status === "pending"
+    (s) => s.date === dateStr && s.status !== "cancelled"
   );
   if (daySessions.length > 0) {
     dayDiv.classList.add("has-sessions");
@@ -199,31 +128,35 @@ function showSessionsModal(dateStr, daySessions) {
   } else {
     modalBody.innerHTML = daySessions
       .map(
-        (session) => `
-                    <div class="session-card" id="session-${session.id}">
-                        <div class="session-time"><i class="bi bi-clock"></i> ${
-                          session.time
-                        }</div>
-                        <div class="student-name"><i class="bi bi-person"></i> ${
-                          session.studentName
-                        }</div>
-                        <span class="wellness-badge wellness-${
-                          session.type.toLowerCase().split(" ")[0]
-                        }">${session.type}</span>
-                        <div class="session-actions">
-                            <button class="btn-confirm" onclick="confirmSession(${
-                              session.id
-                            })">
-                                <i class="bi bi-check-circle"></i> Confirm
-                            </button>
-                            <button class="btn-cancel" onclick="cancelSession(${
-                              session.id
-                            })">
-                                <i class="bi bi-x-circle"></i> Cancel
-                            </button>
-                        </div>
+        (session) => {
+          const isConfirmed = session.status === 'confirmed';
+          const statusBadge = isConfirmed
+            ? '<div class="text-success fw-bold mt-2"><i class="bi bi-check-circle-fill"></i> Confirmed</div>'
+            : '';
+
+          const actions = isConfirmed
+            ? `<button class="btn-cancel" onclick="cancelSession(${session.id})"><i class="bi bi-x-circle"></i> Cancel</button>`
+            : `
+                    <button class="btn-confirm" onclick="confirmSession(${session.id})">
+                        <i class="bi bi-check-circle"></i> Confirm
+                    </button>
+                    <button class="btn-cancel" onclick="cancelSession(${session.id})">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </button>
+                `;
+
+          return `
+                <div class="session-card" id="session-${session.id}">
+                    <div class="session-time"><i class="bi bi-clock"></i> ${session.time}</div>
+                    <div class="student-name"><i class="bi bi-person"></i> ${session.studentName}</div>
+                    <span class="wellness-badge wellness-${session.type.toLowerCase().split(" ")[0]}">${session.type}</span>
+                    ${statusBadge}
+                    <div class="session-actions">
+                        ${actions}
                     </div>
-                `
+                </div>
+            `;
+        }
       )
       .join("");
   }
@@ -238,15 +171,12 @@ function confirmSession(sessionId) {
     const sessionCard = document.getElementById(`session-${sessionId}`);
     sessionCard.style.opacity = "0.5";
     sessionCard.innerHTML = `
-                    <div class="session-time"><i class="bi bi-clock"></i> ${
-                      session.time
-                    }</div>
-                    <div class="student-name"><i class="bi bi-person"></i> ${
-                      session.studentName
-                    }</div>
-                    <span class="wellness-badge wellness-${
-                      session.type.toLowerCase().split(" ")[0]
-                    }">${session.type}</span>
+                    <div class="session-time"><i class="bi bi-clock"></i> ${session.time
+      }</div>
+                    <div class="student-name"><i class="bi bi-person"></i> ${session.studentName
+      }</div>
+                    <span class="wellness-badge wellness-${session.type.toLowerCase().split(" ")[0]
+      }">${session.type}</span>
                     <div style="color: #28a745; font-weight: 600; margin-top: 10px;">
                         <i class="bi bi-check-circle-fill"></i> Confirmed
                     </div>
@@ -267,15 +197,12 @@ function cancelSession(sessionId) {
       const sessionCard = document.getElementById(`session-${sessionId}`);
       sessionCard.style.opacity = "0.5";
       sessionCard.innerHTML = `
-                        <div class="session-time"><i class="bi bi-clock"></i> ${
-                          session.time
-                        }</div>
-                        <div class="student-name"><i class="bi bi-person"></i> ${
-                          session.studentName
-                        }</div>
-                        <span class="wellness-badge wellness-${
-                          session.type.toLowerCase().split(" ")[0]
-                        }">${session.type}</span>
+                        <div class="session-time"><i class="bi bi-clock"></i> ${session.time
+        }</div>
+                        <div class="student-name"><i class="bi bi-person"></i> ${session.studentName
+        }</div>
+                        <span class="wellness-badge wellness-${session.type.toLowerCase().split(" ")[0]
+        }">${session.type}</span>
                         <div style="color: #dc3545; font-weight: 600; margin-top: 10px;">
                             <i class="bi bi-x-circle-fill"></i> Cancelled
                         </div>

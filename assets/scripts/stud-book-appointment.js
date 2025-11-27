@@ -26,26 +26,21 @@ document.addEventListener("DOMContentLoaded", function () {
 document
   .getElementById("appointmentForm")
   .addEventListener("submit", function (e) {
-    e.preventDefault();
+    // Let the form submit normally to PHP
+    // The PHP will handle saving to database
 
-    // Collect form data
-    const formData = new FormData(this);
-    const data = {};
+    // Optional: You can add validation here before submission
+    const appointmentDate = document.getElementById("appointmentDate").value;
+    const appointmentTime = document.getElementById("appointmentTime").value;
 
-    formData.forEach((value, key) => {
-      data[key] = value;
-    });
+    if (!appointmentDate || !appointmentTime) {
+      e.preventDefault();
+      alert("Please select both appointment date and time.");
+      return false;
+    }
 
-    // Display success message
-    alert(
-      "Your appointment has been successfully submitted! The Guidance Office will review your information and contact you soon."
-    );
-
-    // Optional: Reset form after submission
-    // this.reset();
-    // updateProgress();
-
-    console.log("Form Data:", data);
+    // Form will submit normally to PHP
+    console.log("Submitting appointment form...");
   });
 
 // Reset Form

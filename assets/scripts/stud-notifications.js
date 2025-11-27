@@ -1,64 +1,13 @@
 // Sample notification data
-const notifications = [
-  {
-    id: 1,
-    date: "Monday, August 29 at 09:00 AM",
-    counselor: "Dr. Maria Santos",
-    type: "Academic",
-    status: "Pending",
-    unread: true,
-  },
-  {
-    id: 2,
-    date: "Tuesday, August 30 at 10:30 AM",
-    counselor: "Dr. Juan Dela Cruz",
-    type: "Personal",
-    status: "Confirmed",
-    unread: true,
-  },
-  {
-    id: 3,
-    date: "Wednesday, August 31 at 02:00 PM",
-    counselor: "Dr. Maria Santos",
-    type: "Career",
-    status: "Completed",
-    unread: false,
-  },
-  {
-    id: 4,
-    date: "Thursday, September 1 at 11:00 AM",
-    counselor: "Dr. Ana Reyes",
-    type: "Academic",
-    status: "Pending",
-    unread: true,
-  },
-  {
-    id: 5,
-    date: "Friday, September 2 at 03:30 PM",
-    counselor: "Dr. Juan Dela Cruz",
-    type: "Personal",
-    status: "Cancelled",
-    unread: false,
-  },
-  {
-    id: 6,
-    date: "Monday, September 5 at 09:00 AM",
-    counselor: "Dr. Maria Santos",
-    type: "Career",
-    status: "Confirmed",
-    unread: true,
-  },
-];
+var notifications = window.notifications || [];
 
-// Function to get icon based on status
-function getStatusIcon(status) {
-  const icons = {
-    Pending: "fa-clock",
-    Confirmed: "fa-calendar-check",
-    Completed: "fa-check-circle",
-    Cancelled: "fa-times-circle",
-  };
-  return icons[status] || "fa-bell";
+// Function to get icon based on title/type
+function getStatusIcon(title) {
+  if (title.includes("Pending")) return "fa-clock";
+  if (title.includes("Confirmed")) return "fa-calendar-check";
+  if (title.includes("Completed")) return "fa-check-circle";
+  if (title.includes("Cancelled")) return "fa-times-circle";
+  return "fa-bell";
 }
 
 // Function to render notifications
@@ -69,7 +18,8 @@ function renderNotifications(filter = "all") {
   if (filter === "unread") {
     filteredNotifications = notifications.filter((n) => n.unread);
   } else if (filter === "pending") {
-    filteredNotifications = notifications.filter((n) => n.status === "Pending");
+    // Assuming 'Pending' is in the title for pending appointments
+    filteredNotifications = notifications.filter((n) => n.title.includes("Pending"));
   }
 
   if (filteredNotifications.length === 0) {
@@ -86,30 +36,23 @@ function renderNotifications(filter = "all") {
   container.innerHTML = filteredNotifications
     .map(
       (notification) => `
-                <div class="notification-item ${
-                  notification.unread ? "unread" : ""
-                }" onclick="markAsRead(${notification.id})">
-                    <div class="notification-icon ${notification.status.toLowerCase()}">
-                        <i class="fas ${getStatusIcon(
-                          notification.status
-                        )}"></i>
+                <div class="notification-item ${notification.unread ? "unread" : ""
+        }" onclick="markAsRead(${notification.id})">
+                    <div class="notification-icon">
+                        <i class="fas ${getStatusIcon(notification.title)}"></i>
                     </div>
                     <div class="notification-content">
                         <div class="notification-title">
-                            ${notification.date} - ${notification.counselor} (${
-        notification.type
-      })
+                            ${notification.title}
                         </div>
                         <div class="notification-details">
-                            Appointment scheduled with ${notification.counselor}
+                            ${notification.message}
                         </div>
                         <div class="notification-time">
                             <i class="far fa-clock"></i> ${notification.date}
                         </div>
                     </div>
-                    <span class="notification-status status-${notification.status.toLowerCase()}">
-                        ${notification.status}
-                    </span>
+                    ${notification.unread ? '<span class="badge bg-primary rounded-pill">New</span>' : ''}
                 </div>
             `
     )
@@ -119,17 +62,40 @@ function renderNotifications(filter = "all") {
 // Function to mark notification as read
 function markAsRead(id) {
   const notification = notifications.find((n) => n.id === id);
-  if (notification) {
-    notification.unread = false;
-    renderNotifications();
+  if (notification && notification.unread) {
+
+    // AJAX call to mark as read
+    const formData = new FormData();
+    formData.append('id', id);
+
+    fetch('mark_notification_read.php', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          notification.unread = false;
+          renderNotifications();
+        }
+      });
   }
 }
 
 // Function to mark all as read
 function markAllAsRead() {
-  notifications.forEach((n) => (n.unread = false));
-  renderNotifications();
-  alert("All notifications marked as read!");
+  fetch('mark_notification_read.php', {
+    method: 'POST',
+    body: new FormData() // No ID means mark all
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        notifications.forEach((n) => (n.unread = false));
+        renderNotifications();
+        alert("All notifications marked as read!");
+      }
+    });
 }
 
 // Function to filter notifications

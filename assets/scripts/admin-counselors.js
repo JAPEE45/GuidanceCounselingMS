@@ -1,46 +1,7 @@
 // Sample counselor data
-let counselors = [
-  {
-    id: 1,
-    name: "Dr. Maria Santos",
-    specialization: "Academic",
-    email: "maria.santos@school.edu",
-    consultationTime: "Mon-Fri, 9AM-5PM",
-    status: "active",
-  },
-  {
-    id: 2,
-    name: "Dr. John Rivera",
-    specialization: "Career",
-    email: "john.rivera@school.edu",
-    consultationTime: "Mon-Wed, 10AM-4PM",
-    status: "active",
-  },
-  {
-    id: 3,
-    name: "Ms. Sarah Chen",
-    specialization: "Personal",
-    email: "sarah.chen@school.edu",
-    consultationTime: "Tue-Thu, 1PM-6PM",
-    status: "active",
-  },
-  {
-    id: 4,
-    name: "Dr. Michael Torres",
-    specialization: "Mental Health",
-    email: "michael.torres@school.edu",
-    consultationTime: "Mon-Fri, 8AM-4PM",
-    status: "active",
-  },
-  {
-    id: 5,
-    name: "Ms. Emma Garcia",
-    specialization: "Crisis",
-    email: "emma.garcia@school.edu",
-    consultationTime: "Mon-Sun, 24/7 On-call",
-    status: "inactive",
-  },
-];
+// Sample counselor data
+var counselors = window.counselors || [];
+
 
 let nextId = 6;
 
