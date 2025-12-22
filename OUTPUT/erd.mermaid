@@ -1,51 +1,69 @@
 erDiagram
-    %% Research Standard: Crow's Foot Notation
-    %% Entities
-    USER ||--o{ STUDENT : "has profile"
-    USER ||--o{ COUNSELOR : "has profile"
-    USER ||--o{ ADMIN : "has profile"
-    
-    STUDENT ||--o{ APPOINTMENT : "requests"
-    COUNSELOR ||--o{ APPOINTMENT : "manages"
-    
-    APPOINTMENT ||--|| COUNSELING_RECORD : "generates"
-    USER ||--o{ NOTIFICATION : "receives"
-
-    %% Attributes (Simplified for Readability)
+    %% ENTITIES
     USER {
         int user_id PK
         string email
+        string password
         string role
     }
 
     STUDENT {
         int student_id PK
-        string name
-        string course
+        int user_id FK
+        string full_name
         json wellness_data
     }
 
     COUNSELOR {
         int counselor_id PK
-        string name
-        string specialization
+        int user_id FK
+        string full_name
+        string status
+    }
+
+    ADMIN {
+        int admin_id PK
+        int user_id FK
+        string full_name
     }
 
     APPOINTMENT {
         int appointment_id PK
+        int student_id FK
+        int counselor_id FK
         date date
-        time time
         string status
     }
 
     COUNSELING_RECORD {
         int record_id PK
+        int appointment_id FK
         text session_notes
         text recommendations
     }
 
     NOTIFICATION {
-        int id PK
+        int notification_id PK
+        int user_id FK
         string message
         bool is_read
     }
+
+    %% RELATIONSHIPS (STRICT CARDINALITY)
+    
+    %% 1-to-1: One User Account IS exactly one Student/Counselor/Admin Profile
+    USER ||--|| STUDENT : "associated with"
+    USER ||--|| COUNSELOR : "associated with"
+    USER ||--|| ADMIN : "associated with"
+
+    %% 1-to-Many: One Student can request MANY Appointments
+    STUDENT ||--o{ APPOINTMENT : "requests"
+
+    %% 1-to-Many: One Counselor manages MANY Appointments
+    COUNSELOR ||--o{ APPOINTMENT : "manages"
+
+    %% 1-to-0/1: An Appointment MAY have ONE Record (if finished), or ZERO (if pending)
+    APPOINTMENT ||--o| COUNSELING_RECORD : "generates"
+
+    %% 1-to-Many: User receives MANY Notifications
+    USER ||--o{ NOTIFICATION : "receives"

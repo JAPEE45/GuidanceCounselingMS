@@ -361,56 +361,130 @@ try {
     <script>
         // Override addCounselor
         window.addCounselor = function() {
-            const name = document.getElementById("addName").value;
+            const name = document.getElementById("addName").value.trim();
             const specialization = document.getElementById("addSpecialization").value;
-            const email = document.getElementById("addEmail").value;
-            const time = document.getElementById("addTime").value;
+            const email = document.getElementById("addEmail").value.trim();
+            const time = document.getElementById("addTime").value.trim();
 
-            if (name && specialization && email && time) {
-                const formData = new FormData();
-                formData.append('action', 'add');
-                formData.append('name', name);
-                formData.append('specialization', specialization);
-                formData.append('email', email);
-                formData.append('time', time);
-
-                fetch('manage_counselor.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if(data.success) {
-                        let message = 'Counselor added successfully!\n\n';
-                        message += 'Login Credentials:\n';
-                        message += 'Email: ' + email + '\n';
-                        message += 'Password: ' + data.temp_password + '\n\n';
-                        
-                        if (data.email_sent) {
-                            message += '✓ Email sent to counselor successfully!';
-                        } else {
-                            message += '⚠ Email could not be sent. Please provide the credentials manually.';
-                        }
-                        
-                        alert(message);
-                        location.reload();
-                    } else {
-                        alert("Error: " + data.message);
-                    }
-                })
-                .catch(error => {
-                    alert("Error: " + error.message);
-                });
+            // Validation
+            if (!name) {
+                alert("Please enter the counselor's full name.");
+                return;
             }
+            
+            // Check if name has at least two parts (first and last name)
+            const nameParts = name.split(' ').filter(part => part.length > 0);
+            if (nameParts.length < 2) {
+                alert("Please enter both first name and last name (separated by space).");
+                return;
+            }
+            
+            if (!specialization) {
+                alert("Please select a specialization.");
+                return;
+            }
+            
+            if (!email) {
+                alert("Please enter an email address.");
+                return;
+            }
+            
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+            
+            if (!time) {
+                alert("Please enter the consultation time.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('action', 'add');
+            formData.append('name', name);
+            formData.append('specialization', specialization);
+            formData.append('email', email);
+            formData.append('time', time);
+
+            // Disable button and show loading state
+            const addBtn = document.querySelector('#addCounselorModal .btn-primary');
+            const originalText = addBtn.textContent;
+            addBtn.disabled = true;
+            addBtn.textContent = 'Adding...';
+
+            fetch('manage_counselor.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Server error: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if(data.success) {
+                    let message = 'Counselor added successfully!\n\n';
+                    message += 'Login Credentials:\n';
+                    message += 'Email: ' + email + '\n';
+                    message += 'Password: ' + data.temp_password + '\n\n';
+                    
+                    if (data.email_sent) {
+                        message += '✓ Email sent to counselor successfully!';
+                    } else {
+                        message += '⚠ Email could not be sent. Please provide the credentials manually.';
+                    }
+                    
+                    alert(message);
+                    location.reload();
+                } else {
+                    alert("Error: " + (data.message || "Unknown error occurred"));
+                    addBtn.disabled = false;
+                    addBtn.textContent = originalText;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error: " + error.message);
+                addBtn.disabled = false;
+                addBtn.textContent = originalText;
+            });
         };
 
         // Override updateCounselor
         window.updateCounselor = function() {
             const id = document.getElementById("editId").value;
-            const name = document.getElementById("editName").value;
+            const name = document.getElementById("editName").value.trim();
             const specialization = document.getElementById("editSpecialization").value;
-            const email = document.getElementById("editEmail").value;
-            const time = document.getElementById("editTime").value;
+            const email = document.getElementById("editEmail").value.trim();
+            const time = document.getElementById("editTime").value.trim();
+
+            // Validation
+            if (!name) {
+                alert("Please enter the counselor's full name.");
+                return;
+            }
+            
+            // Check if name has at least two parts (first and last name)
+            const nameParts = name.split(' ').filter(part => part.length > 0);
+            if (nameParts.length < 2) {
+                alert("Please enter both first name and last name (separated by space).");
+                return;
+            }
+            
+            if (!email) {
+                alert("Please enter an email address.");
+                return;
+            }
+            
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
 
             const formData = new FormData();
             formData.append('action', 'update');
@@ -420,17 +494,36 @@ try {
             formData.append('email', email);
             formData.append('time', time);
 
+            // Disable button and show loading state
+            const updateBtn = document.querySelector('#editCounselorModal .btn-primary');
+            const originalText = updateBtn.textContent;
+            updateBtn.disabled = true;
+            updateBtn.textContent = 'Saving...';
+
             fetch('manage_counselor.php', {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Server error: ' + response.status);
+                }
+                return response.json();
+            })
             .then(data => {
                 if(data.success) {
                     location.reload();
                 } else {
-                    alert("Error: " + data.message);
+                    alert("Error: " + (data.message || "Unknown error occurred"));
+                    updateBtn.disabled = false;
+                    updateBtn.textContent = originalText;
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error: " + error.message);
+                updateBtn.disabled = false;
+                updateBtn.textContent = originalText;
             });
         };
 
@@ -445,17 +538,36 @@ try {
             formData.append('id', id);
             formData.append('status', status);
 
+            // Disable button and show loading state
+            const actionBtn = document.querySelector('#deactivateModal .btn-danger');
+            const originalText = actionBtn.textContent;
+            actionBtn.disabled = true;
+            actionBtn.textContent = 'Processing...';
+
             fetch('manage_counselor.php', {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Server error: ' + response.status);
+                }
+                return response.json();
+            })
             .then(data => {
                 if(data.success) {
                     location.reload();
                 } else {
-                    alert("Error: " + data.message);
+                    alert("Error: " + (data.message || "Unknown error occurred"));
+                    actionBtn.disabled = false;
+                    actionBtn.textContent = originalText;
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error: " + error.message);
+                actionBtn.disabled = false;
+                actionBtn.textContent = originalText;
             });
         };
     </script>

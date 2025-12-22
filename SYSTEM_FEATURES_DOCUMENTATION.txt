@@ -1,0 +1,1967 @@
+================================================================================
+    GUIDANCE COUNSELING MANAGEMENT SYSTEM (GCMS)
+    COMPLETE SYSTEM FEATURES & USER ACTIONS DOCUMENTATION
+    For Chapter 4 - System Prototype Reference
+================================================================================
+
+Date: November 30, 2025
+Repository: GuidanceCounselingMS
+Purpose: Comprehensive listing of all features, UI elements, and user actions
+         available on each page for system prototype documentation.
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+1. PUBLIC PAGES (No Authentication Required)
+   1.1 Login Page (index.php)
+   1.2 Student Registration Page
+   1.3 Forgot Password Flow
+
+2. STUDENT PORTAL
+   2.1 Student Dashboard
+   2.2 Book Appointment Page
+   2.3 Student Notifications
+   2.4 Student Profile
+
+3. COUNSELOR PORTAL
+   3.1 Counselor Dashboard
+   3.2 My Schedule (Calendar)
+   3.3 Session Management
+   3.4 Student Record
+   3.5 Counselor Profile
+
+4. ADMIN PORTAL
+   4.1 Admin Dashboard
+   4.2 Counselors Management
+   4.3 Appointments Management
+   4.4 Notifications & Referrals
+   4.5 Admin Profile
+
+5. COMMON COMPONENTS
+   5.1 Sidebar Navigation
+   5.2 Logout Functionality
+
+================================================================================
+1. PUBLIC PAGES (No Authentication Required)
+================================================================================
+
+1.1 LOGIN PAGE (index.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+Main entry point for the system. Allows users to authenticate and access
+role-specific dashboards (Student, Counselor, or Admin).
+
+VISUAL ELEMENTS:
+- System logo/icon (graduation cap icon)
+- System title: "Guidance Counseling Management System"
+- Login form container with blue gradient header
+- Username input field
+- Password input field
+- Remember me checkbox
+- Forgot password link
+- Login button (primary blue)
+- Create New Account button (secondary)
+- Error/success alert messages (dismissible)
+
+USER ACTIONS:
+1. Enter username (email address)
+2. Enter password
+3. Toggle "Remember me" checkbox
+4. Click "Login" button
+   - System validates credentials
+   - Redirects to appropriate dashboard based on role:
+     * Student → Student Dashboard
+     * Counselor → Counselor Dashboard
+     * Admin → Admin Dashboard
+   - Shows error message if credentials invalid
+5. Click "Forgot password?" link
+   - Opens password reset modal
+6. Click "Create New Account" button
+   - Redirects to Student Registration page
+7. Dismiss error alerts by clicking X button
+
+VALIDATION:
+- Both username and password are required fields
+- Email format validation on username
+- Password must match hashed value in database
+
+================================================================================
+
+1.2 STUDENT REGISTRATION PAGE (html/student/registration.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+Allows new students to create an account in the system. Collects personal
+information, academic details, and wellness assessment data.
+
+VISUAL ELEMENTS:
+- Multi-section form with organized layout
+- Section headers with icons
+- Input fields for personal information
+- Dropdown selectors for department, course, year level, gender
+- Date picker for birthday
+- Wellness assessment questions with radio buttons/checkboxes
+- Submit registration button
+- Link back to login page
+- Success/error message alerts
+
+FORM SECTIONS:
+1. Account Information
+   - Email address (unique, will be username)
+   - Password
+   - Confirm password
+
+2. Personal Information
+   - First name
+   - Middle name (optional)
+   - Last name
+   - Student ID number
+   - Birthday (date picker)
+   - Gender (Male/Female/Other)
+   - Contact number
+   - Address
+
+3. Academic Information
+   - Department (dropdown)
+     * College of Computer Studies
+     * College of Engineering
+     * College of Business
+     * College of Arts and Sciences
+     * College of Education
+   - Course (text input)
+   - Year Level (dropdown)
+     * 1st Year
+     * 2nd Year
+     * 3rd Year
+     * 4th Year
+
+4. Wellness Assessment (Optional)
+   - Physical wellness questions
+   - Intellectual wellness questions
+   - Environmental wellness questions
+
+USER ACTIONS:
+1. Fill out all required fields (marked with *)
+2. Select department from dropdown
+3. Select year level from dropdown
+4. Select gender from dropdown
+5. Choose birthday from date picker
+6. Enter contact information
+7. Complete wellness assessment (optional)
+8. Click "Register" button
+   - System validates all inputs
+   - Creates user account with 'student' role
+   - Creates student profile record
+   - Shows success message
+   - Redirects to login page
+9. Click "Back to Login" link to return to login page
+
+VALIDATION:
+- Email must be unique (not already in use)
+- Password must match confirm password
+- Student ID must be unique
+- All required fields must be filled
+- Email format validation
+- Phone number format validation
+
+================================================================================
+
+1.3 FORGOT PASSWORD FLOW
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+Modal-based flow to reset user password via email verification.
+
+VISUAL ELEMENTS:
+- Multi-step modal dialog
+- Email input field
+- Verification code input field
+- New password input fields
+- Step indicator
+- Navigation buttons (Next, Back, Submit)
+
+STEPS:
+Step 1: Email Verification
+- User enters registered email address
+- System validates email exists in database
+- Sends verification code to email
+- Shows success message
+
+Step 2: Code Verification
+- User enters 6-digit verification code
+- System validates code
+- Enables next step if valid
+
+Step 3: Reset Password
+- User enters new password
+- User confirms new password
+- System updates password (hashed)
+- Shows success message
+- Redirects to login
+
+USER ACTIONS:
+1. Click "Forgot password?" on login page
+2. Enter registered email address
+3. Click "Send Verification Code" button
+4. Check email for verification code
+5. Enter verification code
+6. Click "Verify Code" button
+7. Enter new password
+8. Confirm new password
+9. Click "Reset Password" button
+10. System shows success message
+11. User redirected to login page
+
+================================================================================
+2. STUDENT PORTAL
+================================================================================
+
+2.1 STUDENT DASHBOARD (html/student/dashboard.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+Student home page showing appointment status, session history, and profile
+snapshot. Provides quick overview of student's counseling activities.
+
+VISUAL ELEMENTS:
+- Page header with welcome message (personalized with student's first name)
+- Left column (main content):
+  * Appointment Status Card (blue gradient background)
+    - Next session date and time
+    - Assigned counselor name
+    - Status badge (Pending/Confirmed/Completed/Cancelled)
+    - Location information
+  * Session History Card
+    - List of past counseling sessions
+    - Empty state message if no history
+- Right column (sidebar):
+  * Profile Snapshot Card
+    - User avatar icon
+    - Student full name
+    - Student ID number
+    - Department
+    - Course
+    - Year level
+    - Gender
+    - "Edit Profile" button
+
+USER ACTIONS:
+1. View next scheduled appointment details
+   - See appointment date and time
+   - See assigned counselor name
+   - Check appointment status
+2. View session history (past appointments)
+3. Click "Book Now" button if no upcoming appointments
+   - Redirects to Book Appointment page
+4. Click "Edit Profile" button
+   - Redirects to Student Profile page
+5. Navigate using sidebar menu
+
+DATA DISPLAYED:
+- Student first name (personalized greeting)
+- Next appointment date (formatted: "November 11, 2024")
+- Next appointment time (formatted: "10:00 AM")
+- Counselor name (prefixed with "Dr.")
+- Appointment status (color-coded badge)
+- Student profile information (pulled from database)
+- Session history (if available)
+
+STATUS INDICATORS:
+- Pending (yellow/warning badge)
+- Confirmed (green/success badge)
+- Completed (blue/info badge)
+- Cancelled (red/danger badge)
+- Rescheduled (orange badge)
+
+================================================================================
+
+2.2 BOOK APPOINTMENT PAGE (html/student/book-appointment.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+Comprehensive appointment booking form based on official counseling intake
+form. Collects appointment details, student information, medical history,
+counseling concerns, and consent acknowledgment.
+
+VISUAL ELEMENTS:
+- Multi-section form with clear section headers and icons
+- Date and time pickers
+- Checkbox grid for counseling concerns
+- Text areas for medical information
+- Yes/No radio buttons for minor status
+- Conditional fields (parent/guardian info if minor)
+- Required field indicators (red asterisk)
+- Submit button
+- Success/error alert messages
+
+FORM SECTIONS:
+
+1. APPOINTMENT DETAILS
+   Fields:
+   - Appointment Date (date picker, required)
+   - Appointment Time (time picker, required)
+   
+   Visual:
+   - Calendar icon for date
+   - Clock icon for time
+   - Both fields highlighted as required
+
+2. STUDENT INFORMATION
+   Fields:
+   - Student Name (auto-filled from profile, read-only)
+   - Student ID (auto-filled from profile, read-only)
+   - Address (text input, required)
+   - Are you a minor? (Yes/No radio buttons, required)
+   
+   Conditional Fields (if minor = Yes):
+   - Parent/Guardian Name (text input, required)
+   - Parent/Guardian Contact Number (text input, required)
+
+3. COUNSELING CONCERNS (Select all that apply)
+   Checkboxes:
+   - Academic-Related Concerns
+   - Career-Related Concerns
+   - Abuse-Related Concerns
+   - Adjustment/Adaptation Concerns
+   - Parents/Guardian Concerns
+   - Relational-Related Concerns
+   - Sexuality-Related Concerns
+   - Psycho-Emotional Concerns
+   - Suicidal Ideation/Tendencies
+   - Pregnancy-Related Concerns
+   
+   Visual:
+   - Grid layout (2-3 columns)
+   - Checkbox items with borders
+   - Hover effect on items
+   - Icon for each concern type
+
+4. MEDICAL INFORMATION
+   Fields:
+   - Current Medications (textarea, optional)
+     Placeholder: "List any medications you are currently taking..."
+   - Medical Conditions (textarea, optional)
+     Placeholder: "List any medical conditions we should be aware of..."
+   
+   Visual:
+   - Medical bag/heart icon in section header
+   - Large text areas (4-5 rows)
+
+5. CONSENT AND ACKNOWLEDGMENT
+   Elements:
+   - Consent statement (read-only text explaining confidentiality and limits)
+   - Checkbox: "I acknowledge that I have read and understood the above statement" (required)
+   
+   Visual:
+   - Shield/lock icon for security
+   - Bordered consent text box
+   - Prominent checkbox with label
+
+6. FORM ACTIONS
+   Buttons:
+   - "Submit Appointment Request" (primary blue button, full width)
+   - Form reset/clear button (optional)
+
+USER ACTIONS:
+1. Select appointment date from calendar picker
+   - Future dates only (no past dates)
+   - Highlights today's date
+2. Select appointment time from time picker
+   - Business hours (8:00 AM - 5:00 PM suggested)
+3. Review auto-filled student information
+4. Enter current address
+5. Select if student is a minor (Yes/No)
+6. If minor, enter parent/guardian name and contact
+7. Check all applicable counseling concerns
+   - Can select multiple concerns
+   - At least one concern should be selected
+8. Enter current medications (if any)
+9. Enter medical conditions (if any)
+10. Read consent statement carefully
+11. Check consent acknowledgment checkbox (required to submit)
+12. Click "Submit Appointment Request" button
+    - System validates all required fields
+    - Creates appointment record with status = 'Pending'
+    - Updates student address if provided
+    - Creates notifications for:
+      * Student (confirmation of submission)
+      * All active counselors (new request alert)
+      * All admins (new request alert)
+    - Shows success message
+    - Optionally redirects to dashboard
+
+VALIDATION:
+- Appointment date must be in the future
+- Appointment time is required
+- Address is required
+- If minor = Yes, parent/guardian fields become required
+- At least one counseling concern should be selected
+- Consent checkbox must be checked
+- All required fields must be filled before submission
+
+SUCCESS MESSAGE:
+"Appointment booked successfully! You will receive a notification once a
+counselor is assigned."
+
+NOTIFICATIONS CREATED:
+1. Student notification:
+   "Your appointment request for [Date] at [Time] has been submitted
+   successfully. You will be notified once a counselor is assigned."
+
+2. Counselor notification:
+   "New appointment request from [Student Name] for [Date] at [Time].
+   Concerns: [Top 3 concerns]"
+
+3. Admin notification:
+   "New appointment request from [Student Name] for [Date] at [Time].
+   Appointment ID: [ID]"
+
+================================================================================
+
+2.3 STUDENT NOTIFICATIONS (html/student/notifications.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+Displays all notifications for the student including appointment confirmations,
+status updates, counselor assignments, and system messages.
+
+VISUAL ELEMENTS:
+- Page header with title and icon
+- "Mark All as Read" button
+- Filter buttons (All, Unread, Pending)
+- List of notification cards
+- Each card shows:
+  * Notification message
+  * Timestamp (formatted date and time)
+  * Unread indicator (badge or highlighting)
+  * Mark as read button
+- Empty state message if no notifications
+
+NOTIFICATION TYPES:
+1. Appointment Confirmation
+   "Your appointment request for [Date] at [Time] has been submitted successfully."
+
+2. Counselor Assignment
+   "A counselor has been assigned to your appointment on [Date] at [Time]."
+
+3. Appointment Confirmed
+   "Your appointment on [Date] has been confirmed by the counselor."
+
+4. Appointment Declined
+   "Your appointment request for [Date] has been declined. Reason: [Reason]"
+
+5. Appointment Rescheduled
+   "Your appointment has been rescheduled to [New Date] at [New Time]."
+
+6. Appointment Completed
+   "Your counseling session on [Date] has been completed."
+
+7. General System Notifications
+   "System maintenance scheduled for [Date]." (example)
+
+USER ACTIONS:
+1. View all notifications in chronological order (newest first)
+2. Click filter buttons:
+   - "All" - Shows all notifications
+   - "Unread" - Shows only unread notifications
+   - "Pending" - Shows notifications related to pending appointments
+3. Click individual notification card
+   - Expands to show full details
+   - Marks as read automatically
+4. Click "Mark All as Read" button
+   - Marks all notifications as read
+   - Updates database
+   - Removes unread indicators
+5. Scroll through notification list
+6. Navigate to related pages via notification links (if applicable)
+
+DATA DISPLAYED:
+- Notification message text
+- Timestamp (formatted: "November 30, 2024 10:30 AM")
+- Read/Unread status (visual indicator)
+- Total count of unread notifications (badge on sidebar icon)
+
+VISUAL STATES:
+- Unread notifications: Bold text, highlighted background, blue dot/badge
+- Read notifications: Normal text, standard background
+- Empty state: "No notifications to display" message with icon
+
+================================================================================
+
+2.4 STUDENT PROFILE (html/student/profile.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+Allows students to view and edit their personal information, academic details,
+and contact information.
+
+VISUAL ELEMENTS:
+- Profile header section (gradient background)
+  * User avatar icon
+  * Full name display
+  * Student ID number
+- Profile body section
+  * View mode (default)
+  * Edit mode (when editing)
+- "Edit Profile" button
+- Form fields (in edit mode)
+- "Save Changes" button (in edit mode)
+- "Cancel" button (in edit mode)
+
+VIEW MODE SECTIONS:
+
+1. Personal Information
+   Displayed Fields:
+   - Full Name (First Middle Last)
+   - School ID (Student Number)
+   - Birthday (formatted date)
+   - Gender
+   - Phone Number
+   - Department
+   - Course
+   - Year Level
+   
+   Visual:
+   - Each field has a label and value
+   - Organized in 2-column grid
+   - Clean card layout
+
+EDIT MODE SECTIONS:
+
+1. Personal Information Form
+   Editable Fields:
+   - First Name (text input, required)
+   - Middle Name (text input, optional)
+   - Last Name (text input, required)
+   - School ID (read-only, cannot edit)
+   - Birthday (date picker, required)
+   - Gender (dropdown: Male/Female/Other, required)
+   - Phone Number (text input, required)
+   - Department (dropdown, required)
+   - Course (text input, required)
+   - Year Level (dropdown, required)
+
+USER ACTIONS:
+1. VIEW PROFILE (Default State)
+   - View all personal information
+   - Click "Edit Profile" button to enter edit mode
+
+2. EDIT PROFILE
+   - Click "Edit Profile" button
+   - Form fields become editable
+   - Modify desired fields:
+     * Update first name
+     * Update middle name
+     * Update last name
+     * Change birthday
+     * Change gender
+     * Update phone number
+     * Change department
+     * Update course
+     * Change year level
+   - Click "Save Changes" button
+     * System validates inputs
+     * Updates database
+     * Shows success message
+     * Returns to view mode with updated data
+   - Click "Cancel" button
+     * Discards changes
+     * Returns to view mode without saving
+
+3. NAVIGATE AWAY
+   - Use sidebar to navigate to other pages
+   - Unsaved changes are lost (no auto-save)
+
+VALIDATION (Edit Mode):
+- First name required
+- Last name required
+- Birthday required (must be valid date, student must be appropriate age)
+- Gender required (must select from dropdown)
+- Phone number required (format validation)
+- Department required (must select from dropdown)
+- Course required
+- Year level required (must select from dropdown)
+
+SUCCESS MESSAGE:
+"Profile updated successfully!"
+
+ERROR HANDLING:
+- Shows error message if validation fails
+- Highlights invalid fields
+- Keeps user in edit mode to fix errors
+
+================================================================================
+3. COUNSELOR PORTAL
+================================================================================
+
+3.1 COUNSELOR DASHBOARD (html/counselor/dashboard.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+Counselor home page showing key statistics, today's schedule, and upcoming
+appointments. Provides quick overview of counselor's workload and activities.
+
+VISUAL ELEMENTS:
+- Top bar with counselor information
+  * Counselor name (prefixed with "Dr.")
+  * Specialization
+  * Avatar circle with initials
+- Three statistics cards (colored):
+  * Today's Schedules (blue icon)
+  * Total Sessions (green icon)
+  * Total Students (orange icon)
+- Upcoming Appointments section
+  * Next 3 appointments listed
+  * Each showing student name, date, time, purpose
+  * Status badges
+- "See More Appointments" button
+
+STATISTICS DISPLAYED:
+
+1. Today's Schedules
+   - Count of appointments scheduled for today
+   - Excludes cancelled appointments
+   - Blue calendar-check icon
+   - Number displayed prominently
+
+2. Total Sessions
+   - Count of completed counseling sessions
+   - Only appointments with status = 'Completed'
+   - Green comments icon
+   - Lifetime total
+
+3. Total Students
+   - Count of unique students counseled
+   - Counts distinct student IDs from appointments
+   - Orange users icon
+   - Lifetime total
+
+UPCOMING APPOINTMENTS CARD:
+Each appointment shows:
+- Student full name
+- Appointment date (formatted: "November 30, 2024")
+- Appointment time (formatted: "10:00 AM")
+- Purpose/concern
+- Status badge (typically "Confirmed")
+
+USER ACTIONS:
+1. View dashboard statistics at a glance
+2. Check today's schedule count
+3. See total sessions completed
+4. See total unique students counseled
+5. View next 3 upcoming appointments
+   - See student names
+   - See appointment times
+   - See purposes
+6. Click "See More Appointments" button
+   - Redirects to My Schedule page (calendar view)
+7. Navigate using sidebar menu
+
+DATA SOURCES:
+- Statistics pulled from appointments table
+- Filtered by counselor_id
+- Upcoming appointments: status = 'Confirmed', date >= today
+- Sorted by date and time ascending
+
+VISUAL DESIGN:
+- Clean card-based layout
+- Color-coded statistics for quick scanning
+- Professional gradient top bar
+- Responsive design for mobile/tablet
+
+================================================================================
+
+3.2 MY SCHEDULE (CALENDAR) (html/counselor/my-schedule.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+Interactive calendar view showing all appointments assigned to the counselor.
+Allows viewing appointments by month and interacting with individual sessions.
+
+VISUAL ELEMENTS:
+- Calendar header
+  * Current month and year display
+  * Navigation buttons (Previous, Today, Next)
+- Calendar grid
+  * 7-day week layout (Sun-Sat)
+  * Day numbers
+  * Color-coded dots for appointments
+  * Current day highlighting
+  * Clickable days with appointments
+- Sessions modal (popup)
+  * Shows all sessions for selected day
+  * Session details for each appointment
+  * Action buttons (Confirm, Cancel)
+
+CALENDAR FEATURES:
+
+1. Month Navigation
+   - Previous month button (left arrow)
+   - Today button (jumps to current month/date)
+   - Next month button (right arrow)
+   - Month/year header updates dynamically
+
+2. Day Display
+   - Days of week header (Sun-Sat)
+   - Date numbers for each day
+   - Visual indicators:
+     * Today's date highlighted (border/background)
+     * Days with appointments show colored dots
+     * Days in past months grayed out
+     * Future days selectable
+
+3. Appointment Indicators (Color-coded dots)
+   - Green dot = Confirmed appointment
+   - Yellow dot = Pending appointment
+   - Red dot = Declined/Cancelled
+   - Blue dot = Completed
+   - Multiple dots if multiple appointments same day
+
+SESSIONS MODAL (Opened when clicking a day):
+
+Modal Header:
+- Selected date (formatted: "Sessions for November 30, 2024")
+- Close button (X)
+
+Modal Body:
+For each appointment on selected day:
+- Student name
+- Time (formatted: "10:00 AM")
+- Purpose/Type (badge)
+- Status (color-coded badge)
+- Action buttons:
+  * "Confirm" button (if status = Pending)
+  * "Cancel" button (if status = Pending/Confirmed)
+
+Modal Footer:
+- "Close" button
+
+USER ACTIONS:
+
+1. NAVIGATE CALENDAR
+   - Click "Previous" to go to previous month
+   - Click "Next" to go to next month
+   - Click "Today" to jump to current month/date
+   - View month name and year in header
+
+2. VIEW APPOINTMENTS
+   - Scan calendar for days with colored dots
+   - Identify days with appointments
+   - Click on a day with appointments
+   - Modal opens showing all sessions for that day
+
+3. MANAGE SESSIONS (in modal)
+   - View session details (student, time, purpose, status)
+   - Click "Confirm" button to confirm pending appointment
+     * System updates appointment status to 'Confirmed'
+     * Sends notification to student
+     * Updates calendar view (dot color changes)
+     * Shows success message
+   - Click "Cancel" button to cancel appointment
+     * System updates appointment status to 'Cancelled'
+     * Sends notification to student
+     * Updates calendar view (removes or changes dot)
+     * Shows confirmation dialog first
+
+4. CLOSE MODAL
+   - Click "Close" button
+   - Click X button
+   - Click outside modal (backdrop)
+
+DATA DISPLAYED:
+- All appointments where counselor_id matches current counselor
+- Appointment date, time, status
+- Associated student names
+- Purpose/concern for each appointment
+
+STATUS UPDATES:
+When confirming an appointment:
+- Database: status changed from 'Pending' to 'Confirmed'
+- Notification created for student
+- Calendar dot color updates from yellow to green
+
+When cancelling an appointment:
+- Database: status changed to 'Cancelled'
+- Notification created for student with reason
+- Calendar dot color updates to red or removed
+
+================================================================================
+
+3.3 SESSION MANAGEMENT (html/counselor/session-management.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+Manage active counseling sessions and view session history. Allows counselors
+to start sessions, record notes, and complete appointments.
+
+VISUAL ELEMENTS:
+- Tab navigation (Active Sessions | Session History)
+- Active Sessions table
+- Session History table
+- "Start Session" button for each active session
+- Session Details modal
+- Session Notes form
+
+TAB 1: ACTIVE SESSIONS
+
+Table Columns:
+1. Date & Time
+   - Appointment date (formatted: "Nov 30, 2024")
+   - Appointment time (formatted: "10:00 AM")
+2. Student
+   - Student full name
+   - Student number
+3. Purpose
+   - Concern/type (badge)
+4. Action
+   - "Start Session" button
+
+Visual:
+- Clean table layout
+- Alternating row colors for readability
+- Buttons highlighted for action
+- Empty state: "No active sessions found."
+
+TAB 2: SESSION HISTORY
+
+Table Columns:
+1. Date & Time
+   - Session date and time
+2. Student
+   - Student full name
+   - Student number
+3. Purpose
+   - Concern/type
+4. Status
+   - "Completed" badge (green)
+5. Action
+   - "View Notes" button
+
+Visual:
+- Same table styling as Active Sessions
+- Sorted by most recent first
+- Empty state: "No session history available."
+
+SESSION DETAILS MODAL (Opened when "Start Session" is clicked):
+
+Modal Header:
+- Title: "Session Management - [Student Name]"
+- Close button (X)
+
+Modal Body - Student Information Section:
+- Student Name
+- Student ID
+- Appointment Date
+- Appointment Time
+- Purpose
+
+Modal Body - Session Notes Form:
+1. Session Notes (textarea, required)
+   - Large text area for detailed notes
+   - Placeholder: "Enter your observations and discussion points..."
+
+2. Recommendations (textarea, required)
+   - Recommendations for student
+   - Placeholder: "Enter recommendations and action items..."
+
+3. Observations (textarea, optional)
+   - Additional observations
+   - Placeholder: "Enter any additional observations..."
+
+4. Attendance Status (radio buttons, required)
+   - Present (default)
+   - Absent
+   - Excused
+
+Modal Footer:
+- "Save & Complete Session" button (primary)
+- "Cancel" button (secondary)
+
+USER ACTIONS:
+
+1. VIEW ACTIVE SESSIONS
+   - Click "Active Sessions" tab (default view)
+   - View table of all confirmed appointments
+   - See upcoming sessions that need to be conducted
+
+2. START SESSION
+   - Click "Start Session" button for specific appointment
+   - Modal opens with student details
+   - Begin filling out session notes form
+
+3. RECORD SESSION NOTES
+   - Enter session notes (detailed observations, discussion)
+   - Enter recommendations (action items, referrals, follow-ups)
+   - Enter additional observations (optional)
+   - Select attendance status (Present/Absent/Excused)
+
+4. COMPLETE SESSION
+   - Click "Save & Complete Session" button
+   - System validates required fields
+   - Creates counseling_records entry in database
+   - Updates appointment status to 'Completed'
+   - Creates notification for student
+   - Closes modal
+   - Shows success message
+   - Appointment moves from Active to History tab
+
+5. CANCEL SESSION NOTES
+   - Click "Cancel" button
+   - Modal closes without saving
+   - Appointment remains in Active Sessions
+
+6. VIEW SESSION HISTORY
+   - Click "Session History" tab
+   - View table of all completed sessions
+   - See past appointments with notes
+
+7. VIEW HISTORICAL NOTES
+   - Click "View Notes" button on history item
+   - Modal opens showing saved notes (read-only)
+   - View session notes, recommendations, observations
+   - View attendance status
+
+DATA SAVED:
+When completing a session:
+- Session notes (TEXT)
+- Recommendations (TEXT)
+- Observations (TEXT)
+- Attendance status (ENUM: Present/Absent/Excused)
+- Timestamp (created_at)
+- Links to appointment_id
+
+NOTIFICATIONS CREATED:
+Student notification:
+"Your counseling session on [Date] has been completed. Please check with your
+counselor for any follow-up actions."
+
+VALIDATION:
+- Session notes required (cannot be empty)
+- Recommendations required (cannot be empty)
+- Attendance status must be selected
+- Observations optional
+
+================================================================================
+
+3.4 STUDENT RECORD (html/counselor/student-record.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+Comprehensive view of all students with their counseling history, notes, and
+progress tracking. Allows counselors to review student records.
+
+VISUAL ELEMENTS:
+- Page header with title and description
+- Search box for filtering students
+- Student list table
+- "View" button for each student
+- Student Details modal
+
+MAIN PAGE ELEMENTS:
+
+1. Search Box
+   - Text input field
+   - Placeholder: "Search students..."
+   - Real-time filtering as user types
+   - Searches by name, year level, or course
+
+2. Student List Table
+   Columns:
+   - Name (full name)
+   - Year Level (1st Year, 2nd Year, etc.)
+   - Course
+   - Actions (View button)
+   
+   Visual:
+   - Clean table with borders
+   - Hover effect on rows
+   - Responsive design
+   - Empty state if no results
+
+USER ACTIONS:
+
+1. SEARCH STUDENTS
+   - Type in search box
+   - Table filters in real-time
+   - Shows matching students only
+   - Clear search to see all students
+
+2. VIEW STUDENT DETAILS
+   - Click "View" button for specific student
+   - Modal opens with comprehensive student information
+
+STUDENT DETAILS MODAL:
+
+Modal Sections:
+
+1. Personal Information
+   - Name (full name)
+   - Year Level
+   - Course
+
+2. Counseling History
+   Table showing:
+   - Date (formatted)
+   - Type (purpose/concern)
+   - Status (Pending/Confirmed/Completed/Cancelled)
+   
+   Visual:
+   - Chronological order (most recent first)
+   - Color-coded status badges
+   - Empty state if no history
+
+3. Latest Counselor Notes
+   - Session Notes (most recent completed session)
+   - Display: Read-only text area
+   - Shows: "No records found." if no notes available
+
+4. Referrals
+   - Recommendations from most recent session
+   - Display: Read-only text area
+   - Shows: "No records found." if no referrals
+
+5. Remarks
+   - Observations from most recent session
+   - Display: Read-only text area
+   - Shows: "No records found." if no remarks
+
+Modal Footer:
+- "Close" button
+
+USER ACTIONS IN MODAL:
+
+1. Review personal information
+2. View complete counseling history
+   - See all past appointments
+   - Check dates and purposes
+   - View status of each appointment
+3. Read latest session notes
+4. Review recommendations/referrals
+5. Check counselor remarks/observations
+6. Close modal to return to student list
+
+DATA DISPLAYED:
+- Student information from students table
+- Counseling history from appointments table
+- Session notes from counseling_records table (most recent)
+- Recommendations from counseling_records table
+- Observations from counseling_records table
+
+SEARCH FUNCTIONALITY:
+- Searches across: Student name (first + last), year level, course
+- Case-insensitive
+- Partial matching supported
+- Updates table in real-time
+
+PRIVACY NOTES:
+- Only counselors can access this page
+- Shows all students in system (not just counselor's assigned students)
+- Follows FERPA and counseling confidentiality guidelines
+
+================================================================================
+
+3.5 COUNSELOR PROFILE (html/counselor/profile.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+View and edit counselor's personal and professional information.
+
+VISUAL ELEMENTS:
+- Profile header (gradient background)
+  * Shield icon (counselor badge)
+  * Full name display
+  * "Guidance Counselor" title
+- Profile body with view/edit modes
+- "Edit Profile" button
+- Form fields (in edit mode)
+- Save/Cancel buttons (in edit mode)
+
+VIEW MODE:
+
+Information Displayed:
+- First Name
+- Last Name
+- Specialization
+- Email Address
+
+Visual:
+- Clean card layout
+- Label and value pairs
+- Professional styling
+
+EDIT MODE:
+
+Editable Fields:
+1. First Name (text input, required)
+2. Last Name (text input, required)
+3. Specialization (text input, required)
+4. Email Address (email input, required)
+
+USER ACTIONS:
+
+1. VIEW PROFILE
+   - See all profile information
+   - Click "Edit Profile" button to edit
+
+2. EDIT PROFILE
+   - Click "Edit Profile" button
+   - Fields become editable
+   - Modify information:
+     * Update first name
+     * Update last name
+     * Update specialization
+     * Update email address
+   - Click "Save Changes"
+     * Validates inputs
+     * Updates database (counselors and users tables)
+     * Shows success message
+     * Returns to view mode
+   - Click "Cancel"
+     * Discards changes
+     * Returns to view mode
+
+VALIDATION:
+- All fields required
+- Email must be valid format
+- Email must be unique (if changed)
+
+SUCCESS MESSAGE:
+"Profile updated successfully!"
+
+================================================================================
+4. ADMIN PORTAL
+================================================================================
+
+4.1 ADMIN DASHBOARD (html/admin/dashboard.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+Admin home page showing system statistics and recent appointment requests.
+Provides oversight of system activity.
+
+VISUAL ELEMENTS:
+- Page title and subtitle
+- Three metric cards (statistics)
+- New Requests section
+- "See More" link to appointments page
+
+METRICS DISPLAYED:
+
+1. Active Users
+   - Icon: Users icon (blue)
+   - Count: Total users in system
+   - Metric value displayed prominently
+
+2. Appointments Today
+   - Icon: Calendar-check icon (green)
+   - Count: Appointments scheduled for current date
+   - All statuses included
+
+3. Pending Requests
+   - Icon: Clock icon (orange)
+   - Count: Appointments with status = 'Pending'
+   - Requires admin action/assignment
+
+NEW REQUESTS SECTION:
+
+Shows latest 5 pending appointment requests:
+- Student name
+- Appointment date and time
+- Purpose/concern
+- "Pending" status badge
+
+Each request card displays:
+- Student full name
+- Date (formatted: "Nov 30, 2024")
+- Time (formatted: "10:00 AM")
+- Purpose (truncated if long)
+- Yellow "Pending" badge
+
+USER ACTIONS:
+
+1. VIEW DASHBOARD METRICS
+   - Quick overview of system stats
+   - See total active users
+   - See today's appointment count
+   - See pending requests count
+
+2. VIEW RECENT REQUESTS
+   - See latest 5 pending appointments
+   - Identify urgent requests
+   - Click "See More" to view all appointments
+
+3. NAVIGATE TO APPOINTMENTS
+   - Click "See More" link
+   - Redirects to Appointments Management page
+
+4. NAVIGATE VIA SIDEBAR
+   - Access other admin functions
+   - Go to Counselors, Appointments, Notifications, Profile
+
+DATA SOURCES:
+- Active Users: COUNT from users table
+- Appointments Today: COUNT from appointments WHERE date = CURDATE()
+- Pending Requests: COUNT from appointments WHERE status = 'Pending'
+- Recent Requests: Latest 5 from appointments JOIN students, status = 'Pending'
+
+VISUAL DESIGN:
+- Color-coded metric cards for quick scanning
+- Clean card-based layout
+- Responsive grid system
+- Professional admin interface
+
+================================================================================
+
+4.2 COUNSELORS MANAGEMENT (html/admin/counselors.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+Manage all counselors in the system. Add new counselors, edit information,
+activate/deactivate accounts, and view counselor details.
+
+VISUAL ELEMENTS:
+- Page header with title
+- "Add New Counselor" button (top right)
+- Search and filter controls
+- Counselors table
+- Add Counselor modal
+- Edit Counselor modal
+- Confirmation modals
+
+SEARCH & FILTER SECTION:
+
+Controls:
+1. Search Input
+   - Placeholder: "Search by Counselor Name, Specialization or Email..."
+   - Real-time search functionality
+   - Searches across name, specialization, email
+
+2. Specialization Filter (Dropdown)
+   - All Specializations (default)
+   - Academic
+   - Career
+   - Personal
+   - Mental Health
+   - Crisis
+
+3. Reset Filters Button
+   - Clears search and filter
+   - Resets table to show all counselors
+
+COUNSELORS TABLE:
+
+Columns:
+1. ID (counselor_id)
+2. Name (full name)
+3. Specialization
+4. Email
+5. Consultation Time (e.g., "Mon-Fri, 9AM-5PM")
+6. Status (Active/Inactive badge)
+7. Actions (Edit, Deactivate/Activate buttons)
+
+Visual:
+- Clean table with borders
+- Hover effect on rows
+- Color-coded status badges:
+  * Active = Green badge
+  * Inactive = Gray badge
+- Action buttons:
+  * Edit (blue)
+  * Deactivate (red) or Activate (green)
+
+USER ACTIONS:
+
+1. SEARCH COUNSELORS
+   - Type in search box
+   - Table filters results in real-time
+   - Shows matching counselors only
+
+2. FILTER BY SPECIALIZATION
+   - Select specialization from dropdown
+   - Table shows only counselors with that specialization
+   - Combine with search for refined results
+
+3. RESET FILTERS
+   - Click "Reset Filters" button
+   - Clear search box
+   - Reset dropdown to "All Specializations"
+   - Show all counselors
+
+4. ADD NEW COUNSELOR
+   - Click "Add New Counselor" button
+   - Modal opens with form
+
+ADD COUNSELOR MODAL:
+
+Form Fields:
+1. Full Name (text input, required)
+   - Combined first and last name
+2. Specialization (dropdown, required)
+   - Academic
+   - Career
+   - Personal
+   - Mental Health
+   - Crisis
+3. Email (email input, required)
+   - Must be unique
+4. Consultation Time (text input, required)
+   - e.g., "Mon-Fri, 9AM-5PM"
+5. Password (password input, required)
+   - For counselor login
+6. Confirm Password (password input, required)
+   - Must match password
+
+Modal Actions:
+- "Add Counselor" button (submit)
+- "Cancel" button (close without saving)
+
+Submit Process:
+- Validates all fields
+- Checks email uniqueness
+- Creates user account (role = 'counselor')
+- Creates counselor profile record
+- Sets status = 'Active'
+- Shows success message
+- Refreshes counselor table
+- Closes modal
+
+5. EDIT COUNSELOR
+   - Click "Edit" button on counselor row
+   - Edit modal opens
+
+EDIT COUNSELOR MODAL:
+
+Pre-filled Fields:
+1. Full Name (editable)
+2. Specialization (editable dropdown)
+3. Email (editable)
+4. Consultation Time (editable)
+5. Status (Active/Inactive dropdown)
+
+Modal Actions:
+- "Save Changes" button
+- "Cancel" button
+
+Submit Process:
+- Validates inputs
+- Updates counselor record
+- Updates user record (email if changed)
+- Shows success message
+- Refreshes table
+- Closes modal
+
+6. DEACTIVATE COUNSELOR
+   - Click "Deactivate" button (for active counselor)
+   - Confirmation modal appears:
+     "Are you sure you want to deactivate this counselor?"
+   - Click "Yes, Deactivate"
+     * Sets status = 'Inactive'
+     * Counselor cannot login (can be implemented)
+     * Still visible in system for history
+     * Button changes to "Activate"
+   - Click "Cancel" to abort
+
+7. ACTIVATE COUNSELOR
+   - Click "Activate" button (for inactive counselor)
+   - Confirmation modal appears:
+     "Are you sure you want to activate this counselor?"
+   - Click "Yes, Activate"
+     * Sets status = 'Active'
+     * Counselor can login again
+     * Button changes to "Deactivate"
+   - Click "Cancel" to abort
+
+DATA MANAGEMENT:
+- All counselors pulled from counselors table JOIN users table
+- Real-time updates after any action
+- Maintains data integrity across users and counselors tables
+
+VALIDATION:
+- All required fields must be filled
+- Email format validation
+- Email must be unique in users table
+- Password must match confirm password (when adding)
+- Specialization must be selected from dropdown
+
+================================================================================
+
+4.3 APPOINTMENTS MANAGEMENT (html/admin/appointments.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+Manage all appointment requests. View pending appointments, assign counselors,
+approve/decline requests, and view appointment history.
+
+VISUAL ELEMENTS:
+- Page header with title
+- Tab navigation (List of Appointments | History of Appointments)
+- Appointment cards
+- Action buttons (Approve, Decline, Reschedule)
+- Appointment details modal
+- Counselor assignment modal
+- Confirmation modals
+
+TAB 1: LIST OF APPOINTMENTS (Pending)
+
+Display:
+- Grid of appointment cards
+- Each card shows:
+  * Checkbox for selection
+  * Student name
+  * Date (formatted: "Monday, November 11")
+  * Time (formatted: "10:00 AM")
+  * Purpose/Type (badge)
+  * Status badge ("Pending" in yellow)
+  * "View Details" button
+
+Visual:
+- Card layout with borders
+- Hover effect
+- Checkbox in top-left corner
+- Color-coded purpose badges
+- Yellow "Pending" status badge
+
+TAB 2: HISTORY OF APPOINTMENTS
+
+Display:
+- Grid of appointment cards (completed/processed)
+- Each card shows same info as pending
+- Status badges vary:
+  * Confirmed (green)
+  * Declined (red)
+  * Completed (blue)
+  * Cancelled (gray)
+  * Rescheduled (orange)
+
+ACTION BUTTONS (Bottom of page):
+
+Three buttons (disabled by default):
+1. Approve Button (green)
+   - Enabled when appointment(s) selected
+   - Click to approve selected appointments
+   
+2. Decline Button (red)
+   - Enabled when appointment(s) selected
+   - Click to decline selected appointments
+   
+3. Reschedule Button (blue)
+   - Enabled when appointment(s) selected
+   - Click to reschedule selected appointments
+
+USER ACTIONS:
+
+1. VIEW PENDING APPOINTMENTS
+   - Click "List of Appointments" tab
+   - See all pending appointment requests
+   - Scroll through cards
+
+2. VIEW APPOINTMENT HISTORY
+   - Click "History of Appointments" tab
+   - See all processed appointments
+   - Filter by status if needed
+
+3. SELECT APPOINTMENTS
+   - Click checkbox on appointment card(s)
+   - Card highlights when selected
+   - Action buttons become enabled
+   - Can select multiple appointments
+
+4. VIEW APPOINTMENT DETAILS
+   - Click "View Details" button on card
+   - Modal opens showing full appointment information
+
+APPOINTMENT DETAILS MODAL:
+
+Shows comprehensive information:
+- Student Information:
+  * Full name
+  * Student ID
+  * Course and year level
+- Appointment Information:
+  * Date and time
+  * Purpose
+  * Status
+- Additional Information:
+  * Is Minor? (Yes/No)
+  * Parent/Guardian info (if minor)
+  * Address
+  * Counseling Concerns (list)
+  * Current Medications
+  * Medical Conditions
+  * Consent Acknowledged (Yes/No)
+
+Modal Actions:
+- "Assign Counselor" button (if pending)
+- "Close" button
+
+5. ASSIGN COUNSELOR
+   - Click "Assign Counselor" button in details modal
+   - Counselor assignment modal opens
+
+COUNSELOR ASSIGNMENT MODAL:
+
+Elements:
+- Dropdown list of active counselors
+- Each option shows:
+  * Counselor name
+  * Specialization
+- "Assign" button
+- "Cancel" button
+
+Process:
+- Select counselor from dropdown
+- Click "Assign" button
+  * Updates appointment with counselor_id
+  * Status may change to 'Confirmed'
+  * Creates notifications:
+    - Student: "A counselor has been assigned..."
+    - Counselor: "You have been assigned to..."
+  * Shows success message
+  * Closes modal
+  * Updates appointment card
+
+6. APPROVE APPOINTMENTS
+   - Select one or more pending appointments
+   - Click "Approve" button
+   - Confirmation modal appears:
+     "Are you sure you want to approve [X] appointment(s)?"
+   - Click "Yes, Approve"
+     * If no counselor assigned, opens assignment modal first
+     * Updates status to 'Confirmed'
+     * Creates notifications
+     * Moves to history tab
+     * Shows success message
+   - Click "Cancel" to abort
+
+7. DECLINE APPOINTMENTS
+   - Select one or more pending appointments
+   - Click "Decline" button
+   - Decline modal opens:
+     * Text area for reason (required)
+     * "Decline Appointment" button
+     * "Cancel" button
+   - Enter reason for declining
+   - Click "Decline Appointment"
+     * Updates status to 'Declined'
+     * Saves decline reason
+     * Creates notification for student with reason
+     * Moves to history tab
+     * Shows confirmation message
+   - Click "Cancel" to abort
+
+8. RESCHEDULE APPOINTMENTS
+   - Select one or more pending appointments
+   - Click "Reschedule" button
+   - Reschedule modal opens:
+     * New date picker
+     * New time picker
+     * Reason text area (optional)
+     * "Reschedule" button
+     * "Cancel" button
+   - Select new date and time
+   - Enter reason (optional)
+   - Click "Reschedule"
+     * Updates appointment date and time
+     * Status becomes 'Rescheduled'
+     * Creates notification for student
+     * Shows success message
+   - Click "Cancel" to abort
+
+NOTIFICATIONS CREATED:
+
+When assigning counselor:
+- Student: "A counselor has been assigned to your appointment on [Date]."
+- Counselor: "You have been assigned to an appointment with [Student] on [Date]."
+
+When approving:
+- Student: "Your appointment on [Date] has been confirmed."
+
+When declining:
+- Student: "Your appointment request has been declined. Reason: [Reason]"
+
+When rescheduling:
+- Student: "Your appointment has been rescheduled to [New Date] at [New Time]. [Reason if provided]"
+
+VALIDATION:
+- Must select at least one appointment to enable action buttons
+- Decline reason required when declining
+- New date and time required when rescheduling
+- Counselor must be selected when assigning
+
+DATA UPDATES:
+- Appointment status changes reflected immediately
+- Notifications sent to relevant users
+- Database updated with new information
+- UI refreshes to show changes
+
+================================================================================
+
+4.4 NOTIFICATIONS & REFERRALS (html/admin/notifications.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+View all system notifications for admin. Includes appointment requests,
+counselor activities, and system alerts.
+
+VISUAL ELEMENTS:
+- Page header with title
+- "Mark All as Read" button
+- Filter buttons (All, Unread)
+- Notification cards list
+- Empty state message
+
+NOTIFICATION TYPES FOR ADMIN:
+
+1. New Appointment Requests
+   "New appointment request from [Student Name] for [Date] at [Time]. Appointment ID: [ID]"
+
+2. Appointment Assignments
+   "Appointment [ID] assigned to [Counselor Name]"
+
+3. Appointment Status Changes
+   "Appointment [ID] status changed to [Status]"
+
+4. System Alerts
+   "System maintenance scheduled" (example)
+
+USER ACTIONS:
+
+1. VIEW NOTIFICATIONS
+   - See all notifications in chronological order
+   - Most recent first
+   - Unread notifications highlighted
+
+2. FILTER NOTIFICATIONS
+   - Click "All" to see all notifications
+   - Click "Unread" to see only unread
+
+3. MARK AS READ
+   - Click on notification card to mark as read
+   - Click "Mark All as Read" to mark all
+
+4. NAVIGATE FROM NOTIFICATIONS
+   - Some notifications may have links to related pages
+   - Click to go to appointments, counselors, etc.
+
+VISUAL INDICATORS:
+- Unread: Bold text, blue dot, highlighted background
+- Read: Normal text, standard background
+- Empty state: "No notifications" message with icon
+
+================================================================================
+
+4.5 ADMIN PROFILE (html/admin/profile.php)
+--------------------------------------------------------------------------------
+PAGE DESCRIPTION:
+View and edit admin account information.
+
+VISUAL ELEMENTS:
+- Profile header (gradient background)
+  * Shield icon (admin badge)
+  * Full name display
+  * "Administrator" title
+- Profile body with view/edit modes
+- "Edit Profile" button
+- Form fields (in edit mode)
+
+VIEW MODE:
+
+Information Displayed:
+- First Name
+- Last Name
+- Email Address
+
+EDIT MODE:
+
+Editable Fields:
+1. First Name (text input, required)
+2. Last Name (text input, required)
+3. Email Address (email input, required)
+
+USER ACTIONS:
+
+1. VIEW PROFILE
+   - See admin information
+   - Click "Edit Profile" to edit
+
+2. EDIT PROFILE
+   - Click "Edit Profile" button
+   - Modify fields
+   - Click "Save Changes"
+     * Updates database
+     * Shows success message
+     * Returns to view mode
+   - Click "Cancel"
+     * Discards changes
+     * Returns to view mode
+
+VALIDATION:
+- All fields required
+- Email must be valid format
+- Email must be unique (if changed)
+
+================================================================================
+5. COMMON COMPONENTS
+================================================================================
+
+5.1 SIDEBAR NAVIGATION
+--------------------------------------------------------------------------------
+DESCRIPTION:
+Persistent navigation menu on the left side of all authenticated pages.
+Different menu items for each user role.
+
+VISUAL ELEMENTS:
+- Sidebar brand (top)
+  * Graduation cap icon
+  * "Guidance Counseling" text
+- Menu items (vertical list)
+  * Icon + text for each item
+  * Active state highlighting
+- Mobile toggle button (hamburger icon)
+
+STUDENT SIDEBAR MENU:
+1. Dashboard (home icon)
+2. Book Appointment (calendar-check icon)
+3. Notifications (bell icon)
+4. Profile (user-circle icon)
+5. Logout (sign-out icon)
+
+COUNSELOR SIDEBAR MENU:
+1. Dashboard (home icon)
+2. My Schedule (calendar-alt icon)
+3. Session Management (clipboard-list icon)
+4. Student Record (user-graduate icon)
+5. Profile (user-circle icon)
+6. Logout (sign-out icon)
+
+ADMIN SIDEBAR MENU:
+1. Dashboard (home icon)
+2. Counselors (user-tie icon)
+3. Appointments (calendar-check icon)
+4. Notifications & Referrals (bell icon)
+5. Profile (user-circle icon)
+6. Logout (sign-out icon)
+
+USER ACTIONS:
+
+1. NAVIGATE PAGES
+   - Click any menu item
+   - Page loads (full page refresh or SPA navigation)
+   - Active menu item highlighted
+   - Icon and text both clickable
+
+2. TOGGLE SIDEBAR (Mobile/Tablet)
+   - Click hamburger menu button
+   - Sidebar slides in/out
+   - Overlay appears when sidebar open
+   - Click outside to close
+
+VISUAL STATES:
+- Active menu item: Blue background, white text
+- Hover state: Light background highlight
+- Default state: Dark text on light background
+- Sidebar collapsed on small screens
+
+RESPONSIVE BEHAVIOR:
+- Desktop (>992px): Sidebar always visible, pushes content
+- Tablet/Mobile (<992px): Sidebar hidden, toggle button shown
+
+================================================================================
+
+5.2 LOGOUT FUNCTIONALITY
+--------------------------------------------------------------------------------
+DESCRIPTION:
+Ends user session and returns to login page.
+
+LOCATION:
+- Logout link in sidebar menu (all user types)
+- Bottom of sidebar menu
+
+USER ACTIONS:
+
+1. LOGOUT
+   - Click "Logout" link in sidebar
+   - System destroys PHP session
+   - Clears all session variables
+   - Redirects to index.php (login page)
+   - User must login again to access system
+
+SECURITY:
+- Session data completely cleared
+- No back button access to protected pages after logout
+- Secure session destruction
+
+FILE: logout.php
+Process:
+1. session_start()
+2. session_destroy()
+3. Redirect to index.php
+
+================================================================================
+ADDITIONAL FEATURES & NOTES
+================================================================================
+
+SECURITY FEATURES:
+- All pages check for valid session
+- Role-based access control (students cannot access admin pages, etc.)
+- Password hashing (password_hash function)
+- SQL injection prevention (prepared statements)
+- XSS protection (htmlspecialchars on output)
+
+NOTIFICATION SYSTEM:
+- Real-time notification creation
+- Database-driven (notifications table)
+- Unread count displayed on sidebar bell icon
+- Color-coded notification badges
+- Mark as read functionality
+- Persistent across sessions
+
+DATA VALIDATION:
+- Client-side validation (HTML5 required attributes, pattern matching)
+- Server-side validation (PHP)
+- Database constraints (foreign keys, unique constraints, NOT NULL)
+- Error messages displayed to user
+- Invalid data rejected before database insert
+
+RESPONSIVE DESIGN:
+- Bootstrap 5 grid system
+- Mobile-first approach
+- Collapsible sidebar on small screens
+- Touch-friendly buttons and controls
+- Responsive tables (horizontal scroll on mobile)
+
+ACCESSIBILITY:
+- Semantic HTML elements
+- ARIA labels where appropriate
+- Keyboard navigation support
+- Sufficient color contrast
+- Screen reader friendly
+
+DATABASE OPERATIONS:
+- CRUD operations (Create, Read, Update, Delete)
+- Transactions for complex operations
+- Foreign key constraints
+- Cascade deletes where appropriate
+- Indexed fields for performance
+
+EMAIL INTEGRATION:
+- PHPMailer library used
+- Password reset emails
+- Appointment confirmation emails (optional)
+- Notification emails (configurable)
+
+ERROR HANDLING:
+- Try-catch blocks for database operations
+- User-friendly error messages
+- Developer error logging
+- Graceful degradation
+
+SESSION MANAGEMENT:
+- PHP sessions for authentication
+- Session variables: user_id, role, email
+- Session timeout (configurable)
+- Secure session handling
+
+================================================================================
+TECHNICAL STACK
+================================================================================
+
+FRONTEND:
+- HTML5
+- CSS3 (Custom + Bootstrap 5.3.2)
+- JavaScript (Vanilla JS, no frameworks)
+- Font Awesome 6.4.2 (icons)
+- Bootstrap Icons (optional)
+
+BACKEND:
+- PHP 7.4+ (server-side scripting)
+- MySQL 5.7+ (database)
+- PDO (database abstraction layer)
+
+LIBRARIES:
+- PHPMailer 6.x (email sending)
+- Bootstrap 5.3.2 (UI framework)
+
+SERVER:
+- Apache/Nginx (web server)
+- XAMPP/WAMP/LAMP (local development)
+
+DATABASE:
+- MySQL database: gcms_db
+- Tables: users, students, counselors, admins, appointments, counseling_records,
+  notifications, system_settings
+
+================================================================================
+FILE STRUCTURE REFERENCE
+================================================================================
+
+/GuidanceCounselingMS/
+├── index.php (Login page)
+├── logout.php (Logout handler)
+├── forgot_password.php (Password reset handler)
+├── config/
+│   ├── database.php (DB connection)
+│   ├── email.php (Email config)
+│   └── email_helper.php (Email functions)
+├── html/
+│   ├── student/
+│   │   ├── dashboard.php
+│   │   ├── book-appointment.php
+│   │   ├── notifications.php
+│   │   ├── profile.php
+│   │   ├── registration.php
+│   │   ├── update_profile.php
+│   │   └── mark_notification_read.php
+│   ├── counselor/
+│   │   ├── dashboard.php
+│   │   ├── my-schedule.php
+│   │   ├── session-management.php
+│   │   ├── student-record.php
+│   │   ├── profile.php
+│   │   ├── update_profile.php
+│   │   ├── update_appointment_status.php
+│   │   ├── save_session_notes.php
+│   │   └── mark_notification_read.php
+│   └── admin/
+│       ├── dashboard.php
+│       ├── counselors.php
+│       ├── appointments.php
+│       ├── notifications.php
+│       ├── profile.php
+│       ├── manage_counselor.php
+│       ├── manage_appointment.php
+│       ├── assign_counselor.php
+│       ├── get_appointment_details.php
+│       ├── update_profile.php
+│       └── mark_notification_read.php
+├── assets/
+│   ├── scripts/
+│   │   ├── components/
+│   │   │   └── sidebar.js
+│   │   ├── stud-dashboard.js
+│   │   ├── stud-book-appointment.js
+│   │   ├── stud-notifications.js
+│   │   ├── stud-profile.js
+│   │   ├── counselor-dashboard.js
+│   │   ├── counselor-my-schedule.js
+│   │   ├── counselor-student-record.js
+│   │   ├── admin-dashboard.js
+│   │   ├── admin-counselors.js
+│   │   └── admin-appointments.js
+│   └── styles/
+│       ├── components/
+│       │   ├── sidebar.css
+│       │   └── variables.css
+│       └── layouts/
+│           ├── index.css
+│           ├── stud-dashboard.css
+│           ├── stud-profile.css
+│           ├── stud-notifications.css
+│           ├── counselor-dashboard.css
+│           ├── counselor-my-schedule.css
+│           ├── counselor-student-record.css
+│           ├── admin-dashboard.css
+│           ├── admin-counselors.css
+│           └── admin-appointments.css
+└── lib/
+    └── PHPMailer/ (email library)
+
+================================================================================
+END OF DOCUMENTATION
+================================================================================
+
+This documentation provides a comprehensive reference for all features,
+user actions, and visual elements in the Guidance Counseling Management
+System. Use this as a guide for creating system prototypes, user manuals,
+and technical documentation for your Chapter 4 capstone presentation.
+
+For questions or clarifications, refer to the actual source code files
+in the repository.
+
+Last Updated: November 30, 2025
+Version: 1.0

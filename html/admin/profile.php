@@ -8,7 +8,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 }
 
 try {
-    $stmt = $pdo->prepare("SELECT * FROM admins WHERE user_id = ?");
+    $stmt = $pdo->prepare("
+        SELECT a.*, u.email 
+        FROM admins a 
+        JOIN users u ON a.user_id = u.user_id 
+        WHERE a.user_id = ?
+    ");
     $stmt->execute([$_SESSION['user_id']]);
     $admin = $stmt->fetch();
 

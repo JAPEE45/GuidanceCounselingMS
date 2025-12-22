@@ -46,6 +46,8 @@ try {
             
             'date' => date('F d, Y', strtotime($appointment['appointment_date'])),
             'time' => date('g:i A', strtotime($appointment['appointment_time'])),
+            'created_at' => date('F d, Y g:i A', strtotime($appointment['created_at'])),
+            'status' => $appointment['status'],
             'purpose' => $appointment['purpose'],
             'concerns' => json_decode($appointment['counseling_concerns'] ?? '[]'),
             

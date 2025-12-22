@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../../config/database.php';
+require_once '../../config/email_helper.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
     header("Location: ../../index.php");
@@ -134,6 +135,83 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $pdo->commit();
+        
+        // Send confirmation email to student
+        $studentEmail = $student['email'];
+        $studentFullName = $student['first_name'] . ' ' . $student['last_name'];
+        
+        $emailSubject = "Appointment Confirmation - Guidance Counseling System";
+        $emailMessage = "
+        <html>
+        <head>
+            <title>Appointment Confirmation</title>
+            <style>
+                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                .header { background-color: #4a90a4; color: white; padding: 20px; text-align: center; border-radius: 5px 5px 0 0; }
+                .content { background-color: #f9f9f9; padding: 30px; border: 1px solid #ddd; border-radius: 0 0 5px 5px; }
+                .appointment-details { background-color: white; padding: 20px; border-left: 4px solid #4a90a4; margin: 20px 0; }
+                .detail-row { padding: 8px 0; border-bottom: 1px solid #eee; }
+                .detail-label { font-weight: bold; color: #555; }
+                .detail-value { color: #333; }
+                .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+                .status-badge { display: inline-block; padding: 5px 15px; background-color: #ffc107; color: #000; border-radius: 20px; font-weight: bold; }
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <div class='header'>
+                    <h1>📅 Appointment Confirmation</h1>
+                </div>
+                <div class='content'>
+                    <p>Dear <strong>{$studentFullName}</strong>,</p>
+                    <p>Your appointment request has been successfully submitted and is now pending review.</p>
+                    
+                    <div class='appointment-details'>
+                        <h3 style='margin-top: 0; color: #4a90a4;'>Appointment Details</h3>
+                        <div class='detail-row'>
+                            <span class='detail-label'>Appointment ID:</span>
+                            <span class='detail-value'>#{$appointmentId}</span>
+                        </div>
+                        <div class='detail-row'>
+                            <span class='detail-label'>Date:</span>
+                            <span class='detail-value'>{$formattedDate}</span>
+                        </div>
+                        <div class='detail-row'>
+                            <span class='detail-label'>Time:</span>
+                            <span class='detail-value'>{$formattedTime}</span>
+                        </div>
+                        <div class='detail-row'>
+                            <span class='detail-label'>Purpose:</span>
+                            <span class='detail-value'>{$purpose}</span>
+                        </div>
+                        <div class='detail-row'>
+                            <span class='detail-label'>Status:</span>
+                            <span class='status-badge'>Pending</span>
+                        </div>
+                    </div>
+                    
+                    <p><strong>What's Next?</strong></p>
+                    <ul>
+                        <li>An administrator will review your appointment request</li>
+                        <li>A counselor will be assigned to your appointment</li>
+                        <li>You will receive another email once your appointment is confirmed</li>
+                    </ul>
+                    
+                    <p>If you have any questions or need to make changes, please contact the guidance office.</p>
+                </div>
+                <div class='footer'>
+                    <p>This is an automated message from Guidance Counseling System.</p>
+                    <p>Please do not reply to this email.</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        ";
+        
+        // Send the email (non-blocking - don't fail if email fails)
+        sendEmail($studentEmail, $emailSubject, $emailMessage);
+        
         $message = "Appointment booked successfully! You will receive a notification once a counselor is assigned.";
         $messageType = "success";
 

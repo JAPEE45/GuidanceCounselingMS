@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Diagram (DFD Level 0) - GCMS</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+        .instructions {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+            background: #eef;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Context Diagram: Guidance Counseling Management System</h1>
+        <div class="mermaid">
+            graph TD
+            %% Styles matching standard DFD/UML-like aesthetics
+            classDef entity fill:#ffffff,stroke:#000000,stroke-width:2px,shape:rect;
+            classDef process fill:#e1f5fe,stroke:#000000,stroke-width:2px,rx:15,ry:15;
+            
+            %% Entities (Squares)
+            Student[Student]:::entity
+            Counselor[Counselor]:::entity
+            Admin[Admin]:::entity
+
+            %% System Process (Rounded Rectangle/Circle representation)
+            System((0.0<br/>Guidance Counseling<br/>Management System)):::process
+
+            %% Relationships
+            
+            %% Student Flows
+            Student -- "Login Credentials,<br/>Appointment Requests,<br/>Profile Updates" --> System
+            System -- "Appointment Confirmations,<br/>Reminders,<br/>Counseling Reports" --> Student
+
+            %% Counselor Flows
+            Counselor -- "Approval/Rescheduling,<br/>Session Notes,<br/>Progress Updates,<br/>Recommendations" --> System
+            System -- "Appointment Requests (View),<br/>Student Records,<br/>Reports" --> Counselor
+
+            %% Admin Flows
+            Admin -- "User Account Management,<br/>System Configuration,<br/>Policies" --> System
+            System -- "User Activity Logs,<br/>System Reports,<br/>Statistical Summaries" --> Admin
+        </div>
+        <div class="instructions">
+            <p><strong>To save this as an image:</strong></p>
+            <p>1. Maximize this window.</p>
+            <p>2. Take a screenshot (Windows: Win+Shift+S).</p>
+            <p>3. Paste into your document.</p>
+        </div>
+    </div>
+</body>
+</html>

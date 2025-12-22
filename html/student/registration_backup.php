@@ -1,6 +1,5 @@
 <?php
 require_once '../../config/database.php';
-require_once '../../config/email_helper.php';
 
 $message = '';
 $messageType = '';
@@ -17,31 +16,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $department = $_POST['department'];
     $course = $_POST['course'];
     $yearLevel = $_POST['yearLevel'];
-    $email = trim($_POST['email']);
+    $username = $_POST['username'];
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
 
-    // Validate email format
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $message = "Please enter a valid email address.";
-        $messageType = "danger";
-    } elseif ($password !== $confirmPassword) {
+    if ($password !== $confirmPassword) {
         $message = "Passwords do not match!";
-        $messageType = "danger";
-    } elseif (strlen($password) < 6) {
-        $message = "Password must be at least 6 characters long.";
         $messageType = "danger";
     } else {
         try {
             $pdo->beginTransaction();
 
-            // Generate verification token
-            $verificationToken = bin2hex(random_bytes(32));
+            // Check if username or email (using username as email/identifier) already exists
+            // The schema uses 'email' but the form uses 'username'. I'll map username to email for now or adjust schema?
+            // Schema: email VARCHAR(255) NOT NULL UNIQUE
+            // Form: username
+            // I will use the username as the email field in the DB for simplicity, or I should ask?
+            // The login page asks for "Username". The schema has "email".
+            // I'll assume 'username' in the form maps to 'email' in the DB, or I should alter the table to have username.
+            // Let's check the schema again.
+            // Schema: email VARCHAR(255) NOT NULL UNIQUE
+            // I'll use the username input for the email column, but validate it looks like a username.
             
-            // Insert into users table with verification token
-            $stmt = $pdo->prepare("INSERT INTO users (email, password, role, email_verified, verification_token) VALUES (?, ?, 'student', 0, ?)");
+            // Insert into users table
+            $stmt = $pdo->prepare("INSERT INTO users (email, password, role) VALUES (?, ?, 'student')");
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $stmt->execute([$email, $hashedPassword, $verificationToken]);
+            $stmt->execute([$username, $hashedPassword]);
             $userId = $pdo->lastInsertId();
 
             // Insert into students table
@@ -55,70 +55,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$userId, $schoolId, $firstName, $lastName, $age, $gender, $birthday, $course, $yearLevel, $contactNumber]);
 
             $pdo->commit();
+            $message = "Registration successful! You can now login.";
+            $messageType = "success";
             
-            // Send verification email
-            $verificationLink = "http://" . $_SERVER['HTTP_HOST'] . "/GuidanceCounselingMS/verify_email.php?token=" . $verificationToken;
-            $fullName = $firstName . ' ' . $lastName;
-            
-            $subject = "Verify Your Email - Guidance Counseling System";
-            $emailMessage = "
-            <html>
-            <head>
-                <style>
-                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-                    .content { background-color: #f9f9f9; padding: 40px; border: 1px solid #ddd; }
-                    .button { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 40px; text-decoration: none; border-radius: 25px; font-weight: bold; margin: 20px 0; }
-                    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
-                    .info-box { background-color: #e8f4f8; padding: 15px; border-left: 4px solid #4a90a4; margin: 20px 0; }
-                </style>
-            </head>
-            <body>
-                <div class='container'>
-                    <div class='header'>
-                        <h1>✉️ Email Verification</h1>
-                    </div>
-                    <div class='content'>
-                        <h2>Welcome to Guidance Counseling System!</h2>
-                        <p>Hello <strong>{$fullName}</strong>,</p>
-                        <p>Thank you for registering with the Guidance Counseling System. To complete your registration and activate your account, please verify your email address.</p>
-                        <div class='info-box'>
-                            <strong>📧 Your Email:</strong> {$email}<br>
-                            <strong>🎓 Student ID:</strong> {$schoolId}<br>
-                            <strong>📚 Course:</strong> {$course}
-                        </div>
-                        <p style='text-align: center;'>
-                            <a href='{$verificationLink}' class='button'>Verify Email Address</a>
-                        </p>
-                        <p style='font-size: 12px; color: #666;'>If the button doesn't work, copy and paste this link into your browser:<br>
-                        <a href='{$verificationLink}'>{$verificationLink}</a></p>
-                        <p><strong>Note:</strong> This link will remain valid until you verify your email.</p>
-                        <p>If you did not create this account, please ignore this email.</p>
-                    </div>
-                    <div class='footer'>
-                        <p>This is an automated message from Guidance Counseling System.</p>
-                        <p>Please do not reply to this email.</p>
-                    </div>
-                </div>
-            </body>
-            </html>
-            ";
-            
-            $emailSent = sendEmail($email, $subject, $emailMessage);
-            
-            if ($emailSent) {
-                $message = "Registration successful! Please check your email ({$email}) to verify your account before logging in.";
-                $messageType = "success";
-            } else {
-                $message = "Registration successful but we couldn't send the verification email. Please contact the administrator.";
-                $messageType = "warning";
-            }
+            // Optional: Redirect after short delay
+            header("refresh:2;url=../../index.php");
 
         } catch (PDOException $e) {
             $pdo->rollBack();
             if ($e->getCode() == 23000) {
-                $message = "This email or Student ID is already registered.";
+                $message = "Username or Student ID already exists.";
             } else {
                 $message = "Error: " . $e->getMessage();
             }

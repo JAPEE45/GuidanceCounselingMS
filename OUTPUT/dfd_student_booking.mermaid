@@ -1,30 +1,34 @@
 flowchart TD
-    %% Standard DFD Shapes
+    %% Standard DFD Shapes and Data Flow Standards
     classDef process fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,rx:10,ry:10;
     classDef entity fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,shape:rect;
     classDef store fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,shape:cylinder;
 
-    %% Nodes
+    %% Entities
     Student[Student]:::entity
-    Process1[1. Login & Auth]:::process
-    Process2[2. Check Schedule]:::process
-    Process3[3. Submit Booking]:::process
-    Process4[4. Notify Counselor]:::process
+    Counselor[Counselor]:::entity
     
-    DB_Users[(Users DB)]:::store
-    DB_Appt[(Appointments DB)]:::store
-    DB_Notif[(Notifications DB)]:::store
+    %% Processes (Functionality - Circle/Oval for DFD)
+    P1((1.0 Validate User)):::process
+    P2((2.0 Check Availability)):::process
+    P3((3.0 Process Booking)):::process
+    P4((4.0 Generate Notification)):::process
+    
+    %% Data Stores (Open Rectangle or Cylinder)
+    D1[(Users DB)]:::store
+    D2[(Appointments DB)]:::store
+    D3[(Notifications DB)]:::store
 
-    %% Flow
-    Student -->|Credentials| Process1
-    Process1 <-->|Validate| DB_Users
+    %% Data Flows (NOUNS ONLY - Representing Data Packets)
+    Student -->|Login Credentials| P1
+    P1 <-->|User Profile Data| D1
     
-    Process1 -->|Token| Process2
-    Process2 <-->|Get Slots| DB_Appt
+    P1 -->|Validated User ID| P2
+    P2 <-->|Schedule Slot Information| D2
     
-    Student -->|Select Date/Time + Wellness Info| Process3
-    Process3 -->|Save Appointment| DB_Appt
+    Student -->|Booking Request & Wellness Data| P3
+    P3 -->|New Appointment Record| D2
     
-    Process3 -->|Trigger| Process4
-    Process4 -->|Save Alert| DB_Notif
-    Process4 -->|Email Sent| Counselor[Counselor]:::entity
+    P3 -->|Appointment Detail Packet| P4
+    P4 -->|Alert Data Record| D3
+    P4 -->|Email Confirmation Content| Counselor

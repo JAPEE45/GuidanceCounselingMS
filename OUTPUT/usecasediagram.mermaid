@@ -1,0 +1,48 @@
+usecaseDiagram
+    %% ACTORS (UML Stick Figures)
+    actor "Student" as S
+    actor "Counselor" as C
+    actor "Administrator" as A
+
+    package "Guidance Counseling Management System" {
+        %% Core Use Cases
+        usecase "Login / Register" as UC1
+        usecase "Manage Profile" as UC2
+        
+        %% Student Features
+        usecase "Book Appointment" as UC3
+        usecase "View Appointment Status" as UC4
+        usecase "Answer Wellness Form" as UC_Well
+        
+        %% Counselor Features
+        usecase "Manage Schedule" as UC5
+        usecase "Record Session Notes" as UC6
+        usecase "View Student Records" as UC7
+        
+        %% Admin Features
+        usecase "Manage Counselors" as UC8
+        usecase "Monitor System Activity" as UC9
+    }
+
+    %% RELATIONSHIPS
+    %% Student
+    S --> UC1
+    S --> UC2
+    S --> UC3
+    S --> UC4
+    
+    %% Include Relationship (Strict UML)
+    UC3 ..> UC_Well : <<include>>
+
+    %% Counselor
+    C --> UC1
+    C --> UC2
+    C --> UC5
+    C --> UC6
+    C --> UC7
+
+    %% Admin
+    A --> UC1
+    A --> UC2
+    A --> UC8
+    A --> UC9

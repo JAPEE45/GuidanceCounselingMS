@@ -62,67 +62,19 @@ try {
       </div>
       <ul class="sidebar-menu">
         <li>
-<<<<<<< HEAD:html/student/profile.php
-          <a href="./dashboard.php" class=""
-            ><i class="fas fa-home"></i> Dashboard</a
-          >
+          <a href="./dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
         </li>
         <li>
-          <a href="./book-appointment.php" class=""
-            ><i class="fas fa-calendar-check"></i> Book Appointment</a
-          >
+          <a href="./book-appointment.php"><i class="fas fa-calendar-check"></i> Book Appointment</a>
         </li>
         <li>
-          <a href="./notifications.php" class=""
-            ><i class="fas fa-bell"></i> Notification</a
-=======
-          <a href="./dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-        </li>
-        <li>
-          <a href="./counselors.html" class=""><i class="fas fa-user-tie"></i> Counselors</a>
-        </li>
-        <!-- <li>
-          <a href="#" class="nav-link" onclick="toggleSubmenu(event)">
-            <i class="fas fa-users"></i>
-            <span>User Management</span>
-            <i
-              class="fas fa-chevron-down ms-auto"
-              style="font-size: 0.8rem"
-            ></i>
-          </a>
-          <div class="submenu" id="userSubmenu">
-            <a href="#" class="nav-link">
-              <i class="fas fa-user-graduate"></i>
-              <span>Students</span>
-            </a>
-            <a href="#" class="nav-link">
-              <i class="fas fa-user-tie"></i>
-              <span>Counselors</span>
-            </a>
-          </div>
-        </li> -->
-        <li>
-          <a href="./appointments.html"
-            ><i class="fa-solid fa-calendar-check"></i> Appointments</a
-          >
-        </li>
-        <li>
-          <a href="./notifications.html" class="notif-referrals"
-            ><i class="fas fa-bell"></i> Notifications & Referrals</a
->>>>>>> d535bcbd858fc9a86ad0a232e4d38b0334f10cfb:html/admin/profile.html
-          >
+          <a href="./notifications.php"><i class="fas fa-bell"></i> Notifications</a>
         </li>
         <li>
           <a href="#" class="active"><i class="fa-solid fa-user-circle"></i> Profile</a>
         </li>
         <li>
-<<<<<<< HEAD:html/student/profile.php
           <a href="../../logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
-=======
-          <a href="../../index.html"
-            ><i class="fas fa-sign-out-alt"></i> Logout</a
-          >
->>>>>>> d535bcbd858fc9a86ad0a232e4d38b0334f10cfb:html/admin/profile.html
         </li>
       </ul>
     </aside>

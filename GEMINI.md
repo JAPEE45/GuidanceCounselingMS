@@ -2,6 +2,7 @@
     - DONT EDIT THE SOURCE CODE OF THIS CODEBASE
     - YOUR MY CAPSTONE RESEARCH BUDDY, WE'RE JUST USING THIS CODE BASE TO CREATE A CHAPTER 4 PAPERS
     - IF WE HAVE AN OUTPUT FILE JUST PUT IT IN ONE DIRECTORY: /OUTPUT
+    Z
 # Guidance Counseling Management System (GCMS)
 
 ## Project Overview
@@ -83,3 +84,45 @@ The database `gcms_db` consists of the following key entities:
 *   `SYSTEM_FLOW_ANALYSIS.md`: Detailed breakdown of implemented vs. missing features.
 *   `DATABASE_UPDATE_INSTRUCTIONS.md`: Recent database changes.
 *   `index.php`: Login logic and routing.
+
+# Chapter 4: Design and Methodology (Context for Revision)
+
+**Methodology:** Agile Methodology (Iterative development, sprints).
+**Requirements Gathering:** Interviews, surveys, direct observations.
+
+**Functional Requirements:**
+1.  **Authentication & Security:** Secure login (Bcrypt), role-validated sessions.
+2.  **Student Appointment & Wellness:** Booking + Wellness Questionnaire (Physical, Intellectual, Environmental).
+3.  **Counselor Session Management:** View appointments, read wellness responses, record confidential Session Notes & recommendations.
+4.  **Administrative Management:** User accounts, master schedule, assign counselors.
+5.  **Notification System:** Automated in-system and email alerts (PHPMailer) for status updates.
+
+**Non-Functional Requirements:**
+1.  **Usability:** Responsive, Bootstrap 5.
+2.  **Security:** PDO Prepared Statements, SQL injection prevention, session hijacking protection.
+3.  **Reliability:** Data integrity, email delivery via mail server.
+4.  **Performance:** Loading under 3 seconds, handle peak usage.
+
+**Design Diagrams (To Revise/Discuss):**
+*   **Context Diagram (Figure 2):** Central GCMS interacting with Student, Counselor, Admin.
+*   **DFD Level 1 (Figure 3):** 5 Processes: 1.0 Authentication, 2.0 Appointment Management, 3.0 Session Documentation, 4.0 System Administration, 5.0 Notification System. Flows between Users -> System -> Databases (Users, Appointments, Records, Notifications).
+*   **Use Case Diagram (Figure 4):**
+    *   **Student:** Register/Login, Profile, Schedule Appt, View Appt Status.
+    *   **Counselor:** Manage Schedule, Session Management (Record Notes, Update Records).
+    *   **Admin:** User Accounts, Monitor System, Configure Settings.
+*   **Activity Diagram (Figure 5):** Swimlane showing Student/Counselor/Admin flows.
+*   **ERD (Figure 6):** Crow's Foot notation. `USERS` (Parent) -> `STUDENTS`/`COUNSELORS` (Child). `APPOINTMENTS` connects Students/Counselors. `RECORDS` linked 1:1 to Appointments.
+*   **System Architecture (Figure 7):** 3-Tier (GUI -> Apache Web Server -> MySQL Database).
+
+**System Prototype (Figures 8-23):**
+*   **Login:** Role-based redirection (Fig 8).
+*   **Student:** Registration (Fig 9), Dashboard (Fig 10), Booking with Wellness Form (Fig 11a-c), Notifications (Fig 12).
+*   **Counselor:** Dashboard (Fig 13), Calendar (Fig 14), Session Manager (Fig 15 - Active/History tabs), Student Record (Fig 16), Profile (Fig 17).
+*   **Admin:** Dashboard (Metrics) (Fig 18), Counselors Mgmt (Fig 19), Appointments Mgmt (Fig 20), Notifications/Assignment (Fig 22), Profile (Fig 23).
+
+**Development & Testing:**
+*   **Method:** Agile (Sprints).
+*   **Evaluation:** ISO/IEC 25010 (Functional Suitability, Performance Efficiency, Compatibility, Usability, Reliability, Security, Maintainability, Portability).
+*   **Data Gathering:** Interviews, observations (Dev phase); Survey questionnaire (Evaluation phase).
+*   **Respondents:** 27 Total Population -> Sample of 9 (5 Students, 3 Counselors, 1 Admin).
+*   **Statistical Tools:** Weighted Mean, Frequency Counts, Likert Scale (5-point).

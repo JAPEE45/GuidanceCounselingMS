@@ -14,13 +14,33 @@ $action = $_POST['action'] ?? '';
 
 try {
     if ($action === 'add') {
-        $name = $_POST['name'];
-        $specialization = $_POST['specialization'];
-        $email = $_POST['email'];
-        $time = $_POST['time'];
+        $name = trim($_POST['name'] ?? '');
+        $specialization = trim($_POST['specialization'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $time = trim($_POST['time'] ?? '');
+        
+        // Validate required fields
+        if (empty($name)) {
+            throw new Exception("Name is required.");
+        }
+        if (empty($specialization)) {
+            throw new Exception("Specialization is required.");
+        }
+        if (empty($email)) {
+            throw new Exception("Email is required.");
+        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new Exception("Please enter a valid email address.");
+        }
         
         // Split name into first and last (simple split)
-        $parts = explode(' ', $name);
+        $parts = array_filter(explode(' ', $name)); // array_filter removes empty elements
+        $parts = array_values($parts); // Re-index array
+        
+        if (count($parts) < 2) {
+            throw new Exception("Please enter both first name and last name (separated by space).");
+        }
+        
         $lastName = array_pop($parts);
         $firstName = implode(' ', $parts);
 
@@ -86,32 +106,61 @@ try {
         ]);
 
     } elseif ($action === 'update') {
-        $id = $_POST['id']; // Counselor ID
-        $name = $_POST['name'];
-        $specialization = $_POST['specialization'];
-        $email = $_POST['email'];
+        $id = $_POST['id'] ?? ''; // Counselor ID
+        $name = trim($_POST['name'] ?? '');
+        $specialization = trim($_POST['specialization'] ?? '');
+        $email = trim($_POST['email'] ?? '');
         // $time = $_POST['time'];
 
-        $parts = explode(' ', $name);
+        // Validate required fields
+        if (empty($id)) {
+            throw new Exception("Counselor ID is required.");
+        }
+        if (empty($name)) {
+            throw new Exception("Name is required.");
+        }
+        if (empty($email)) {
+            throw new Exception("Email is required.");
+        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new Exception("Please enter a valid email address.");
+        }
+
+        $parts = array_filter(explode(' ', $name));
+        $parts = array_values($parts);
+        
+        if (count($parts) < 2) {
+            throw new Exception("Please enter both first name and last name (separated by space).");
+        }
+        
         $lastName = array_pop($parts);
         $firstName = implode(' ', $parts);
 
         $pdo->beginTransaction();
 
+        // Get User ID first
+        $stmt = $pdo->prepare("SELECT user_id FROM counselors WHERE counselor_id = ?");
+        $stmt->execute([$id]);
+        $userId = $stmt->fetchColumn();
+        
+        if (!$userId) {
+            throw new Exception("Counselor not found.");
+        }
+
+        // Check if email exists for another user
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = ? AND user_id != ?");
+        $stmt->execute([$email, $userId]);
+        if ($stmt->fetchColumn() > 0) {
+            throw new Exception("This email address is already registered to another user.");
+        }
+
         // Update Counselor
         $stmt = $pdo->prepare("UPDATE counselors SET first_name = ?, last_name = ?, specialization = ? WHERE counselor_id = ?");
         $stmt->execute([$firstName, $lastName, $specialization, $id]);
 
-        // Get User ID
-        $stmt = $pdo->prepare("SELECT user_id FROM counselors WHERE counselor_id = ?");
-        $stmt->execute([$id]);
-        $userId = $stmt->fetchColumn();
-
         // Update User Email
-        if ($userId) {
-            $stmt = $pdo->prepare("UPDATE users SET email = ? WHERE user_id = ?");
-            $stmt->execute([$email, $userId]);
-        }
+        $stmt = $pdo->prepare("UPDATE users SET email = ? WHERE user_id = ?");
+        $stmt->execute([$email, $userId]);
 
         $pdo->commit();
         echo json_encode(['success' => true]);

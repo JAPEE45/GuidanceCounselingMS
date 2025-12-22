@@ -14,27 +14,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['user_id'];
-            $_SESSION['role'] = $user['role'];
-            $_SESSION['email'] = $user['email'];
+            // Check if email is verified (skip for admin and counselor)
+            if ($user['role'] === 'student' && isset($user['email_verified']) && $user['email_verified'] == 0) {
+                $message = "Please verify your email address before logging in. Check your inbox for the verification link.";
+            } else {
+                $_SESSION['user_id'] = $user['user_id'];
+                $_SESSION['role'] = $user['role'];
+                $_SESSION['email'] = $user['email'];
 
-            // Redirect based on role
-            switch ($user['role']) {
-                case 'student':
-                    header("Location: html/student/dashboard.php");
-                    break;
-                case 'counselor':
-                    header("Location: html/counselor/dashboard.php");
-                    break;
-                case 'admin':
-                    header("Location: html/admin/dashboard.php");
-                    break;
-                default:
-                    $message = "Invalid role assigned to user.";
+                // Redirect based on role
+                switch ($user['role']) {
+                    case 'student':
+                        header("Location: html/student/dashboard.php");
+                        break;
+                    case 'counselor':
+                        header("Location: html/counselor/dashboard.php");
+                        break;
+                    case 'admin':
+                        header("Location: html/admin/dashboard.php");
+                        break;
+                    default:
+                        $message = "Invalid role assigned to user.";
+                }
+                exit;
             }
-            exit;
         } else {
-            $message = "Invalid username or password.";
+            $message = "Invalid email or password.";
         }
     } catch (PDOException $e) {
         $message = "Error: " . $e->getMessage();
@@ -57,6 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     />
 
     <link rel="stylesheet" href="./assets/styles/layouts/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/scripts/index.js"></script>
   </head>
   <body>
     <div class="login-container">
@@ -75,15 +82,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         <form id="loginForm" method="POST" action="">
           <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
+            <label for="username" class="form-label">Email Address</label>
             <div class="input-group">
               <!-- <span class="input-group-text"><i class="fas fa-user"></i></span> -->
               <input
-                type="text"
+                type="email"
                 class="form-control"
                 id="username"
                 name="username"
-                placeholder="Enter Username"
+                placeholder="Enter your email"
                 required
               />
             </div>
@@ -208,8 +215,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
           <div class="modal-body">
             <p class="text-muted mb-4">
-              We've sent a verification code to your email. Please enter it
-              below.
+              We've sent a 6-digit verification code to your email. Please enter it
+              below. The code will expire in 15 minutes.
             </p>
             <div class="mb-3">
               <label for="verificationCode" class="form-label"
@@ -228,6 +235,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="button" class="btn btn-verify" onclick="verifyCode()">
               <i class="fas fa-check-circle me-2"></i>Verify Code
             </button>
+            <div class="text-center mt-3">
+              <p class="text-muted mb-2">Didn't receive the code?</p>
+              <button type="button" class="btn btn-link btn-resend p-0" onclick="resendCode()">
+                <i class="fas fa-redo me-2"></i>Resend Code
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -291,8 +304,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
       </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./assets/scripts/index.js"></script>
   </body>
 </html>

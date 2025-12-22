@@ -1,30 +1,31 @@
 graph TD
-    %% Styling for Research Quality
-    classDef entity fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000;
-    classDef system fill:#fff3e0,stroke:#e65100,stroke-width:3px,color:#000,font-weight:bold;
-    
-    %% Nodes
+    %% Context Diagram (Level 0 DFD)
+    %% SYMBOLS:
+    %% - Process: Circle (The System)
+    %% - Entity: Rectangle (Users)
+    %% - Flow: Labeled Arrows (Data Packets)
+
+    classDef process fill:#fff3e0,stroke:#e65100,stroke-width:3px;
+    classDef entity fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+
+    %% Central Process
+    System((Guidance Counseling<br>Management System)):::process
+
+    %% External Entities
     Student[Student]:::entity
     Counselor[Counselor]:::entity
-    Admin[Admin]:::entity
-    GCMS((Guidance Counseling<br>Management System)):::system
+    Admin[Administrator]:::entity
 
-    %% Data Flow - Student
-    Student -->|1. Login / Registration| GCMS
-    Student -->|2. Appointment Request & Wellness Data| GCMS
-    GCMS -->|3. Appointment Confirmation & Notifications| Student
+    %% Data Flows: Student
+    Student -->|Registration Data| System
+    Student -->|Booking Request & Wellness Info| System
+    System -->|Appt Confirmation & Alerts| Student
 
-    %% Data Flow - Counselor
-    Counselor -->|4. Login| GCMS
-    Counselor -->|5. Session Notes & Status Updates| GCMS
-    GCMS -->|6. Schedule & Student Records| Counselor
+    %% Data Flows: Counselor
+    Counselor -->|Login Credentials| System
+    Counselor -->|Session Notes & Status Updates| System
+    System -->|Assigned Schedule & Student Data| Counselor
 
-    %% Data Flow - Admin
-    Admin -->|7. Login| GCMS
-    Admin -->|8. Manage Accounts| GCMS
-    GCMS -->|9. System Reports & User Lists| Admin
-
-    %% Layout Hints
-    Student ~~~ GCMS
-    Counselor ~~~ GCMS
-    Admin ~~~ GCMS
+    %% Data Flows: Admin
+    Admin -->|Admin Commands| System
+    System -->|System Reports & User Lists| Admin

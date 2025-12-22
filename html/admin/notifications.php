@@ -8,13 +8,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 }
 
 try {
-    // Fetch pending appointments without assigned counselor
+    // Fetch appointments without assigned counselor (Pending or Confirmed/Approved)
     $stmt = $pdo->query("
-        SELECT a.appointment_id, a.appointment_date, a.appointment_time, a.purpose, a.counseling_concerns,
+        SELECT a.appointment_id, a.appointment_date, a.appointment_time, a.purpose, a.counseling_concerns, a.status,
                s.first_name, s.last_name, s.student_number, s.course, s.year_level
         FROM appointments a
         JOIN students s ON a.student_id = s.student_id
-        WHERE a.status = 'Pending' AND a.counselor_id IS NULL
+        WHERE (a.status = 'Pending' OR a.status = 'Confirmed') AND a.counselor_id IS NULL
         ORDER BY a.appointment_date ASC, a.appointment_time ASC
     ");
     $pendingAppointments = $stmt->fetchAll();
@@ -400,12 +400,13 @@ try {
       <div class="mb-4">
         <div class="section-header">
           <i class="fas fa-user-clock"></i>
-          <h4>Pending Appointments - Assign Counselor</h4>
+          <h4>Appointments Awaiting Counselor Assignment</h4>
         </div>
         <div class="table-responsive">
           <table class="table table-hover align-middle">
             <thead class="table-header">
               <tr>
+                <th><i class="fas fa-info-circle"></i> Status</th>
                 <th><i class="fas fa-user-graduate"></i> Student Name</th>
                 <th><i class="fas fa-id-card"></i> Student #</th>
                 <th><i class="fas fa-graduation-cap"></i> Course & Year</th>
@@ -419,6 +420,13 @@ try {
             <tbody>
               <?php foreach ($pendingAppointments as $appt): ?>
               <tr class="appointment-row" onclick="viewAppointment(<?php echo $appt['appointment_id']; ?>)" style="cursor: pointer;">
+                <td>
+                  <?php if ($appt['status'] === 'Confirmed'): ?>
+                    <span class="badge bg-success"><i class="fas fa-check-circle"></i> Approved</span>
+                  <?php else: ?>
+                    <span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Pending</span>
+                  <?php endif; ?>
+                </td>
                 <td class="fw-bold text-primary">
                   <?php echo htmlspecialchars($appt['first_name'] . ' ' . $appt['last_name']); ?>
                 </td>
@@ -446,8 +454,8 @@ try {
       <?php else: ?>
       <div class="empty-state">
         <i class="fas fa-check-circle"></i>
-        <h4>All Appointments Assigned!</h4>
-        <p>There are no pending appointments waiting for counselor assignment.</p>
+        <h4>All Appointments Have Counselors Assigned!</h4>
+        <p>There are no approved appointments waiting for counselor assignment.</p>
       </div>
       <?php endif; ?>
 
@@ -560,40 +568,113 @@ try {
                         const appt = data.data;
                         const concernsHtml = appt.concerns.map(c => `<span class="badge bg-info me-1 mb-1">${c}</span>`).join('');
                         const parentSection = appt.is_minor ? `
-                            <div class="alert alert-warning mt-3">
-                                <h6><i class="fas fa-users me-2"></i> Parent/Guardian (Minor)</h6>
-                                <p class="mb-1"><strong>Name:</strong> ${appt.parent_name}</p>
-                                <p class="mb-0"><strong>Contact:</strong> ${appt.parent_contact}</p>
+                            <!-- Parent/Guardian Information (Minor) -->
+                            <div class="col-12">
+                                <div class="card border-danger">
+                                    <div class="card-header bg-danger text-white">
+                                        <h6 class="mb-0"><i class="fas fa-users me-2"></i> Parent/Guardian Information (Student is a Minor)</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p class="mb-0"><strong>Parent/Guardian Name:</strong></p>
+                                                <p class="text-dark">${appt.parent_name}</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p class="mb-0"><strong>Parent/Guardian Contact:</strong></p>
+                                                <p class="text-dark">${appt.parent_contact}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         ` : '';
 
                         modalBody.innerHTML = `
-                            <div class="row">
+                            <div class="row g-3">
+                                <!-- Student Information -->
                                 <div class="col-md-6">
-                                    <h6 class="text-primary border-bottom pb-2"><i class="fas fa-user-graduate me-2"></i> Student Information</h6>
-                                    <p class="mb-1"><strong>Name:</strong> ${appt.student_name}</p>
-                                    <p class="mb-1"><strong>Student #:</strong> ${appt.student_number}</p>
-                                    <p class="mb-1"><strong>Course/Year:</strong> ${appt.course_year}</p>
-                                    <p class="mb-1"><strong>Contact:</strong> ${appt.contact}</p>
-                                    <p class="mb-1"><strong>Email:</strong> ${appt.email}</p>
-                                    <p class="mb-3"><strong>Address:</strong> ${appt.address}</p>
+                                    <div class="card border-primary h-100">
+                                        <div class="card-header bg-primary text-white">
+                                            <h6 class="mb-0"><i class="fas fa-user-graduate me-2"></i> Student Information</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-sm table-borderless mb-0">
+                                                <tr><td class="text-muted" style="width: 40%;">Full Name:</td><td><strong>${appt.student_name}</strong></td></tr>
+                                                <tr><td class="text-muted">Student Number:</td><td><strong>${appt.student_number}</strong></td></tr>
+                                                <tr><td class="text-muted">Course & Year:</td><td><strong>${appt.course_year}</strong></td></tr>
+                                                <tr><td class="text-muted">Email:</td><td>${appt.email}</td></tr>
+                                                <tr><td class="text-muted">Contact:</td><td>${appt.contact}</td></tr>
+                                                <tr><td class="text-muted">Address:</td><td>${appt.address || 'Not provided'}</td></tr>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <h6 class="text-primary border-bottom pb-2"><i class="fas fa-calendar-alt me-2"></i> Appointment Details</h6>
-                                    <p class="mb-1"><strong>Date:</strong> ${appt.date}</p>
-                                    <p class="mb-1"><strong>Time:</strong> ${appt.time}</p>
-                                    <p class="mb-1"><strong>Purpose:</strong> ${appt.purpose}</p>
-                                    <div class="mb-3"><strong>Concerns:</strong><br>${concernsHtml}</div>
-                                </div>
-                            </div>
-                            
-                            ${parentSection}
 
-                            <div class="mt-3">
-                                <h6 class="text-primary border-bottom pb-2"><i class="fas fa-notes-medical me-2"></i> Medical & Consent</h6>
-                                <p class="mb-1"><strong>Medications:</strong> ${appt.medications || 'None'}</p>
-                                <p class="mb-1"><strong>Conditions:</strong> ${appt.conditions || 'None'}</p>
-                                <p class="mb-0"><strong>Consent Acknowledged:</strong> ${appt.consent ? '<span class="text-success"><i class="fas fa-check-circle"></i> Yes</span>' : '<span class="text-danger">No</span>'}</p>
+                                <!-- Appointment Schedule -->
+                                <div class="col-md-6">
+                                    <div class="card border-info h-100">
+                                        <div class="card-header bg-info text-white">
+                                            <h6 class="mb-0"><i class="fas fa-calendar-check me-2"></i> Appointment Schedule</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-sm table-borderless mb-0">
+                                                <tr><td class="text-muted" style="width: 40%;">Preferred Date:</td><td><strong>${appt.date}</strong></td></tr>
+                                                <tr><td class="text-muted">Preferred Time:</td><td><strong>${appt.time}</strong></td></tr>
+                                                <tr><td class="text-muted">Booked On:</td><td>${appt.created_at}</td></tr>
+                                                <tr><td class="text-muted">Status:</td><td><span class="badge bg-${appt.status === 'Confirmed' ? 'success' : 'warning'}">${appt.status}</span></td></tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Counseling Purpose & Concerns -->
+                                <div class="col-12">
+                                    <div class="card border-success">
+                                        <div class="card-header bg-success text-white">
+                                            <h6 class="mb-0"><i class="fas fa-clipboard-list me-2"></i> Counseling Request Details</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <p class="text-muted mb-1">Purpose/Reason:</p>
+                                                    <h6 class="text-success">${appt.purpose}</h6>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <p class="text-muted mb-1">Counseling Concerns Selected:</p>
+                                                    <div>${concernsHtml || '<span class="text-muted">No specific concerns selected</span>'}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                ${parentSection}
+
+                                <!-- Medical Information & Consent -->
+                                <div class="col-12">
+                                    <div class="card border-warning">
+                                        <div class="card-header bg-warning text-dark">
+                                            <h6 class="mb-0"><i class="fas fa-notes-medical me-2"></i> Medical Information & Consent</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p class="mb-2"><strong>Current Medications:</strong></p>
+                                                    <p class="text-secondary">${appt.medications || '<em>None reported</em>'}</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p class="mb-2"><strong>Medical Conditions:</strong></p>
+                                                    <p class="text-secondary">${appt.conditions || '<em>None reported</em>'}</p>
+                                                </div>
+                                            </div>
+                                            <div class="mt-2 p-2 bg-light rounded">
+                                                <strong>Consent & Acknowledgement:</strong> 
+                                                ${appt.consent ? '<span class="text-success ms-2"><i class="fas fa-check-circle"></i> Student has acknowledged and consented to counseling session</span>' : '<span class="text-danger ms-2"><i class="fas fa-times-circle"></i> Consent not acknowledged</span>'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         `;
                     } else {

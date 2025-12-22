@@ -5,9 +5,9 @@
 return [
     'smtp_host' => 'smtp.gmail.com',  // Gmail SMTP server
     'smtp_port' => 587,                // TLS port
-    'smtp_username' => 'your-email@gmail.com',  // YOUR Gmail address
-    'smtp_password' => 'your-app-password',     // YOUR Gmail App Password
-    'from_email' => 'your-email@gmail.com',     // From email address
+    'smtp_username' => 'gcounseling27@gmail.com',  // YOUR Gmail address
+    'smtp_password' => 'lmgs rxkv tydd veqf',     // YOUR Gmail App Password
+    'from_email' => 'gcounseling27@gmail.com',     // From email address
     'from_name' => 'Guidance Counseling System', // From name
 ];
 

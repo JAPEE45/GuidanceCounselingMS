@@ -1,0 +1,39 @@
+flowchart TD
+    %% ACTIVITY DIAGRAM (Swimlane)
+    %% Represents the workflow of a Booking Process
+    
+    subgraph Student_Lane [Student]
+        Start((Start)) --> A1[Log in to System]
+        A1 --> A2{Authenticated?}
+        A2 -- No --> A3[Show Error]
+        A2 -- Yes --> A4[Select 'Book Appointment']
+        A4 --> A5[Choose Date/Time]
+        A5 --> A6[Fill Wellness Form]
+        A6 --> A7[Submit Request]
+        A8[Receive Confirmation] --> End((End))
+    end
+
+    subgraph System_Lane [System]
+        A7 --> B1[Validate Request]
+        B1 --> B2[Save to Database]
+        B2 --> B3[Trigger Notification]
+        B3 --> A8
+        B3 --> C1
+    end
+
+    subgraph Counselor_Lane [Counselor]
+        C1[Receive New Appt Alert] --> C2[View Schedule]
+        C2 --> C3{Accept Request?}
+        C3 -- Yes --> C4[Confirm Appointment]
+        C3 -- No --> C5[Reschedule / Decline]
+        C4 --> C6[Prepare for Session]
+    end
+
+    %% Cross-Lane Connections
+    A3 --> A1
+    C4 --> B3
+    C5 --> B3
+
+    %% Styling
+    classDef startend fill:#000,stroke:#000,stroke-width:2px,color:#fff;
+    class Start,End startend;

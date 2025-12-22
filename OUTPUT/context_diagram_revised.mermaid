@@ -1,0 +1,25 @@
+graph TD
+    %% Styling for DFD Level 0 (Context Diagram)
+    classDef entity fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef system fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,rx:10,ry:10;
+    classDef flow stroke:#333,stroke-width:1px;
+
+    %% External Entities
+    Student[Student]:::entity
+    Counselor[Counselor]:::entity
+    Admin[Admin]:::entity
+
+    %% Main System Process
+    System(0.0<br/>Guidance Counseling<br/>Management System<br/>GCMS):::system
+
+    %% Data Flows: Student <-> System
+    Student -->|Registration Data<br/>Login Credentials<br/>Appointment Request<br/>Profile Updates| System
+    System -->|Appointment Confirmation<br/>Notifications<br/>Counseling Reports View<br/>System Status| Student
+
+    %% Data Flows: Counselor <-> System
+    Counselor -->|Login Credentials<br/>Session Notes<br/>Schedule Updates/Approval<br/>Student Record Updates| System
+    System -->|Appointment Schedules<br/>Student Records<br/>Session Notifications<br/>Counseling Reports| Counselor
+
+    %% Data Flows: Admin <-> System
+    Admin -->|Login Credentials<br/>User Account Management<br/>System Configuration| System
+    System -->|System Reports<br/>User Activity Logs<br/>Dashboard Statistics| Admin

@@ -8,6 +8,14 @@
  * @param string $fromName Optional sender name (defaults to system name)
  */
 
+// Include PHPMailer classes at the top level
+require_once __DIR__ . '/../lib/PHPMailer/src/PHPMailer.php';
+require_once __DIR__ . '/../lib/PHPMailer/src/SMTP.php';
+require_once __DIR__ . '/../lib/PHPMailer/src/Exception.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 function sendEmail($to, $subject, $htmlMessage, $fromName = null) {
     $emailConfig = require __DIR__ . '/email.php';
     
@@ -18,13 +26,6 @@ function sendEmail($to, $subject, $htmlMessage, $fromName = null) {
     $phpmailerPath = __DIR__ . '/../lib/PHPMailer/src/PHPMailer.php';
     
     if (file_exists($phpmailerPath)) {
-        require_once __DIR__ . '/../lib/PHPMailer/src/PHPMailer.php';
-        require_once __DIR__ . '/../lib/PHPMailer/src/SMTP.php';
-        require_once __DIR__ . '/../lib/PHPMailer/src/Exception.php';
-        
-        use PHPMailer\PHPMailer\PHPMailer;
-        use PHPMailer\PHPMailer\Exception;
-        
         $mail = new PHPMailer(true);
         
         try {
