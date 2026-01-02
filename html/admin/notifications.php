@@ -408,8 +408,6 @@ try {
               <tr>
                 <th><i class="fas fa-info-circle"></i> Status</th>
                 <th><i class="fas fa-user-graduate"></i> Student Name</th>
-                <th><i class="fas fa-id-card"></i> Student #</th>
-                <th><i class="fas fa-graduation-cap"></i> Course & Year</th>
                 <th><i class="fas fa-calendar"></i> Date</th>
                 <th><i class="fas fa-clock"></i> Time</th>
                 <th><i class="fas fa-heart"></i> Concerns</th>
@@ -430,8 +428,6 @@ try {
                 <td class="fw-bold text-primary">
                   <?php echo htmlspecialchars($appt['first_name'] . ' ' . $appt['last_name']); ?>
                 </td>
-                <td><?php echo htmlspecialchars($appt['student_number']); ?></td>
-                <td><?php echo htmlspecialchars($appt['course'] . ' - ' . $appt['year_level']); ?></td>
                 <td><?php echo date('M d, Y', strtotime($appt['appointment_date'])); ?></td>
                 <td><?php echo date('g:i A', strtotime($appt['appointment_time'])); ?></td>
                 <td>
